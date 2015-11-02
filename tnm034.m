@@ -6,6 +6,13 @@ function id = tnm034(im)
 % id: The identity number (integer) of the identified person, 
 % i.e.‘1’, ‘2’,...,‘16’for the persons belonging to ‘db1’ and ‘0’ for all other
 % faces.
-  id = 0;
-  return id;
-end
+
+id = 0;
+
+
+
+
+
+
+
+
