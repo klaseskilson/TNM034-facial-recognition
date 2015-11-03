@@ -5,7 +5,7 @@ function [eyeMap] = eyeMap(img)
     Cr = img(:,:,3);
 
     %According to formula 1 in "Face Detection in Color Images"
-    eyeMapC =  ((Cb.^2+((255-Cr).^2)) + (Cb./Cr));
+    eyeMapC =  ((Cb.^2+((255-Cr).^2)) + (Cb./Cr))/3;
     
     %Requires Image Processing Toolbox.
     %Creates a Morphological structuring element, namely a disk which
