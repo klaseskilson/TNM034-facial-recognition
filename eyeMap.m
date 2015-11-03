@@ -10,7 +10,7 @@ function [eyeMap] = eyeMap(img)
     %Requires Image Processing Toolbox.
     %Creates a Morphological structuring element, namely a disk which
     %we can use for erision/dilation. 4 is the radius.
-    SE = strl('disk', 4);
+    SE = strel('disk', 4);
     NOMINATOR = imdilate(Y, SE);
     DENOMINATOR = imerode(Y, SE);
     eyeMapL = NOMINATOR./(DENOMINATOR+1);
