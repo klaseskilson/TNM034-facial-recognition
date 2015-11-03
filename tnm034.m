@@ -7,12 +7,5 @@ function id = tnm034(im)
 % i.e '1', '2',...,'16'for the persons belonging to 'db1' and '0' for all other
 % faces.
 
-id = 0;
-
-
-
-
-
-
-
-
+    id = 0;
+end
