@@ -42,23 +42,39 @@ function [ chroma_img ] = chromaTransformation(img)
     CrCenterh = Ra + (Y - Kh) * (Ra - Rc) / (Ymax - Kh);
     CrCenterh = CrCenterh .* Yh;
     
-    % actually calculate the stuff
-    CPrimBl = CiPrim(Cb, Y, Wcb, CbCenterl, Kh) .* (Yl);
-    CPrimBh = CiPrim(Cb, Y, Wcb, CbCenterh, Kh) .* (Yh);
+    % calculate 
+    SpreadBl = clusterSpreadL(WLcb, Y, Ymin, Wcb, Kl);
+    SpreadBh = clusterSpreadL(WHcb, Y, Ymax, Wcb, Kh);
+    SpreadRl = clusterSpreadL(WLcr, Y, Ymin, Wcr, Kl);
+    SpreadRh = clusterSpreadL(WHcr, Y, Ymax, Wcr, Kh);
+    
+    % actually calculate the new Cb and Cr
+    CPrimBl = cPrim(Cb, Y, Wcb, SpreadBl, CbCenterl, Kh) .* (Yl);
+    CPrimBh = CPrim(Cb, Y, Wcb, SpreadBh, CbCenterh, Kh) .* (Yh);
+    CPrimRl = cPrim(Cr, Y, Wcr, SpreadRl, CrCenterl, Kh) .* (Yl);
+    CPrimRh = CPrim(Cr, Y, Wcr, SpreadRh, CrCenterh, Kh) .* (Yh);
+    % combine the results of the different threshold images
     CPrimBi = Cb .* Y .* Yi;
     CprimB = CPrimBl + CPrimBh + CPrimBi;
-    CPrimRl = CiPrim(Cr, Y, Wcr, CrCenterl, Kh) .* (Yl);
-    CPrimRh = CiPrim(Cr, Y, Wcr, CrCenterh, Kh) .* (Yh);
     CPrimRi = Cr .* Y .* Yi;
     CprimR = CPrimRl + CPrimRh + CPrimRi;
     
+    % merge into one image
     chroma_img = Y;
     chroma_img(:, :, 2) = CprimB;
     chroma_img(:, :, 3) = CprimR;
 end
 
-function [res] = CiPrim(C, Y, Wc, Ccenter, Kh)
-    res = Wc * (C .* Y) - (Ccenter .* Y);
-    res = res ./ (Wc * (Y));
+function [res] =cPrim(C, Y, Wc, clusterSpread, Ccenter, Kh)
+    res = (C .* Y) - (Ccenter .* Y);
+    res = res * Wc ./ clusterSpread;
     res = res + (Ccenter) * Kh;
+end
+
+function [res] = clusterSpreadL(WLc, Y, Ymin, Wc, K)
+    res = WLc + ((Y - Ymin) * (Wc - WLc)) / (K - Ymin);
+end
+
+function [res] = ClusterSpreadH(WHc, Y, Ymax, Wc, K)
+    res = WHc + ((Ymax - Y) * (Wc - WHc)) / (Ymax - K);
 end
