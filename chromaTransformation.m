@@ -23,41 +23,47 @@ function [ chroma_img ] = chromaTransformation(img)
     % binary threshold images
     Yl = uint8(Y < Kl);
     Yh = uint8(Y > Kh);
-    Yi = uint8((Y > Kl) .* (Y < Kh));
+    Yi = uint8((Y > Kl & Y < Kh));
     
     % calc center values Cb, Equation 7
     Ba = 108;
     Bb = 118;
     CbCenterl = Ba + (Kl - Y) * (Bb - Ba) / (Kl - Ymin);
-    CbCenterl = CbCenterl .* Yl;
     CbCenterh = Ba + (Y - Kh) * (Bb - Ba) / (Ymax - Kh);
-    CbCenterh = CbCenterh .* Yh;
-    
+   
+    CbCenter = CbCenterl .* Yl + CbCenterh .* Yh;
+
     % calc center values Cr, Equation 8
     Ra = 154;
     Rb = 144;
     Rc = 132;
     CrCenterl = Ra - (Kl - Y) * (Ra - Rb) / (Kl - Ymin);
-    CrCenterl = CrCenterl .* Yl;
     CrCenterh = Ra + (Y - Kh) * (Ra - Rc) / (Ymax - Kh);
-    CrCenterh = CrCenterh .* Yh;
     
-    % calculate 
+    CrCenter = CrCenterl .* Yl + CrCenterh .* Yh;
+    
+    % calculate spread of b equation 6
     SpreadBl = clusterSpreadL(WLcb, Y, Ymin, Wcb, Kl);
     SpreadBh = clusterSpreadH(WHcb, Y, Ymax, Wcb, Kh);
+
+    SpreadB = SpreadBl .* Kl + SpreadBh .* Kh;
+
+    % calculate spread of r equation 6
     SpreadRl = clusterSpreadL(WLcr, Y, Ymin, Wcr, Kl);
     SpreadRh = clusterSpreadH(WHcr, Y, Ymax, Wcr, Kh);
+
+    SpreadR = SpreadRl .* Kl + SpreadRh .* Kh;
     
-    % actually calculate the new Cb and Cr
-    CPrimBl = cPrim(Cb, Wcb, SpreadBl, CbCenterl, Kh) .* (Yl);
-    CPrimBh = cPrim(Cb, Wcb, SpreadBh, CbCenterh, Kh) .* (Yh);
-    CPrimRl = cPrim(Cr, Wcr, SpreadRl, CrCenterl, Kh) .* (Yl);
-    CPrimRh = cPrim(Cr, Wcr, SpreadRh, CrCenterh, Kh) .* (Yh);
+    % actually calculate the new Cb and Cr, equation 5
+    krConst = 154; 
+    kbConst = 108;
+    CPrimB = cPrim(Cb, Wcb, SpreadB, CbCenter, kbConst);
+    CPrimR = cPrim(Cr, Wcr, SpreadR, CrCenter, krConst);
     % combine the results of the different threshold images
-    CPrimBi = Cb .* Y .* Yi;
-    CprimB = CPrimBl + CPrimBh + CPrimBi;
-    CPrimRi = Cr .* Y .* Yi;
-    CprimR = CPrimRl + CPrimRh + CPrimRi;
+    CPrimBi = Cb .* Yi;
+    CprimB = CPrimB + CPrimBi;
+    CPrimRi = Cr .* Yi;
+    CprimR = CPrimR + CPrimRi;
     
     % merge into one image
     chroma_img = Y;
@@ -69,7 +75,7 @@ end
 function [res] = cPrim(C, Wc, clusterSpread, Ccenter, K)
     res = C - Ccenter;
     res = res * Wc ./ clusterSpread;
-    res = res + Ccenter * K;
+    res = res + K;
 end
 
 % Equation 6
