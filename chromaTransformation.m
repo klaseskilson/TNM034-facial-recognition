@@ -66,10 +66,10 @@ function [ chroma_img ] = chromaTransformation(img)
 end
 
 % Equation 5
-function [res] = cPrim(C, Wc, clusterSpread, Ccenter, Kh)
+function [res] = cPrim(C, Wc, clusterSpread, Ccenter, K)
     res = C - Ccenter;
     res = res * Wc ./ clusterSpread;
-    res = res + (Ccenter) * Kh;
+    res = res + Ccenter * K;
 end
 
 % Equation 6
