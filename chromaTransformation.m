@@ -42,13 +42,18 @@ function [ chroma_img ] = chromaTransformation(img)
     CrCenterh = Ra + (Y - Kh) * (Ra - Rc) / (Ymax - Kh);
     CrCenterh = CrCenterh .* Yh;
     
+    SpreadBl = ClusterSpreadL(WLcb, Y, Ymin, Wcb, Kl);
+    SpreadBh = ClusterSpreadL(WHcb, Y, Ymax, Wcb, Kh);
+    SpreadRl = ClusterSpreadL(WLcr, Y, Ymin, Wcr, Kl);
+    SpreadRh = ClusterSpreadL(WHcr, Y, Ymax, Wcr, Kh);
+    
     % actually calculate the stuff
-    CPrimBl = CiPrim(Cb, Y, Wcb, CbCenterl, Kh) .* (Yl);
-    CPrimBh = CiPrim(Cb, Y, Wcb, CbCenterh, Kh) .* (Yh);
+    CPrimBl = CiPrim(Cb, Y, Wcb, SpreadBl, CbCenterl, Kh) .* (Yl);
+    CPrimBh = CiPrim(Cb, Y, Wcb, SpreadBh, CbCenterh, Kh) .* (Yh);
     CPrimBi = Cb .* Y .* Yi;
     CprimB = CPrimBl + CPrimBh + CPrimBi;
-    CPrimRl = CiPrim(Cr, Y, Wcr, CrCenterl, Kh) .* (Yl);
-    CPrimRh = CiPrim(Cr, Y, Wcr, CrCenterh, Kh) .* (Yh);
+    CPrimRl = CiPrim(Cr, Y, Wcr, SpreadRl, CrCenterl, Kh) .* (Yl);
+    CPrimRh = CiPrim(Cr, Y, Wcr, SpreadRh, CrCenterh, Kh) .* (Yh);
     CPrimRi = Cr .* Y .* Yi;
     CprimR = CPrimRl + CPrimRh + CPrimRi;
     
@@ -57,8 +62,16 @@ function [ chroma_img ] = chromaTransformation(img)
     chroma_img(:, :, 3) = CprimR;
 end
 
-function [res] = CiPrim(C, Y, Wc, Ccenter, Kh)
-    res = Wc * (C .* Y) - (Ccenter .* Y);
-    res = res ./ (Wc * (Y));
+function [res] = CiPrim(C, Y, Wc, clusterSpread, Ccenter, Kh)
+    res = (C .* Y) - (Ccenter .* Y);
+    res = res * Wc ./ clusterSpread;
     res = res + (Ccenter) * Kh;
+end
+
+function [res] = ClusterSpreadL(WLc, Y, Ymin, Wc, K)
+    res = WLc + ((Y - Ymin) * (Wc - WLc)) / (K - Ymin);
+end
+
+function [res] = ClusterSpreadH(WHc, Y, Ymax, Wc, K)
+    res = WHc + ((Ymax - Y) * (Wc - WHc)) / (Ymax - K);
 end
