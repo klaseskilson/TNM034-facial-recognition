@@ -25,7 +25,7 @@ function [ chroma_img ] = chromaTransformation(img)
     Yh = uint8(Y > Kh);
     Yi = uint8((Y > Kl) .* (Y < Kh));
     
-    % calc center values Cb
+    % calc center values Cb, Equation 7
     Ba = 108;
     Bb = 118;
     CbCenterl = Ba + (Kl - Y) * (Bb - Ba) / (Kl - Ymin);
@@ -33,7 +33,7 @@ function [ chroma_img ] = chromaTransformation(img)
     CbCenterh = Ba + (Y - Kh) * (Bb - Ba) / (Ymax - Kh);
     CbCenterh = CbCenterh .* Yh;
     
-    % calc center values Cr
+    % calc center values Cr, Equation 8
     Ra = 154;
     Rb = 144;
     Rc = 132;
@@ -65,12 +65,14 @@ function [ chroma_img ] = chromaTransformation(img)
     chroma_img(:, :, 3) = CprimR;
 end
 
+% Equation 5
 function [res] = cPrim(C, Wc, clusterSpread, Ccenter, Kh)
     res = C - Ccenter;
     res = res * Wc ./ clusterSpread;
     res = res + (Ccenter) * Kh;
 end
 
+% Equation 6
 function [res] = clusterSpreadL(WLc, Y, Ymin, Wc, K)
     res = WLc + ((Y - Ymin) * (Wc - WLc)) / (K - Ymin);
 end
