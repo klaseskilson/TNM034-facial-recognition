@@ -1,4 +1,4 @@
-clear all 
+clear dirname files;
 
 dirname = 'images/db1';
 files = dir(fullfile(dirname, '*.jpg'));
