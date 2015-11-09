@@ -24,7 +24,6 @@ function [ chroma_img ] = chromaTransformation(img)
     Yl = uint8(Y < Kl);
     Yh = uint8(Y > Kh);
     Yi = uint8((Y > Kl & Y < Kh));
-    
     % calc center values Cb, Equation 7
     Ba = 108;
     Bb = 118;
@@ -41,18 +40,18 @@ function [ chroma_img ] = chromaTransformation(img)
     CrCenterh = Ra + (Y - Kh) * (Ra - Rc) / (Ymax - Kh);
     
     CrCenter = CrCenterl .* Yl + CrCenterh .* Yh;
-    
+
     % calculate spread of b equation 6
     SpreadBl = clusterSpreadL(WLcb, Y, Ymin, Wcb, Kl);
     SpreadBh = clusterSpreadH(WHcb, Y, Ymax, Wcb, Kh);
 
-    SpreadB = SpreadBl .* Kl + SpreadBh .* Kh;
+    SpreadB = SpreadBl .* Yl + SpreadBh .* Yh;
 
     % calculate spread of r equation 6
     SpreadRl = clusterSpreadL(WLcr, Y, Ymin, Wcr, Kl);
     SpreadRh = clusterSpreadH(WHcr, Y, Ymax, Wcr, Kh);
 
-    SpreadR = SpreadRl .* Kl + SpreadRh .* Kh;
+    SpreadR = SpreadRl .* Yl + SpreadRh .* Yh;
     
     % actually calculate the new Cb and Cr, equation 5
     krConst = 154; 
@@ -79,10 +78,10 @@ function [res] = cPrim(C, Wc, clusterSpread, Ccenter, K)
 end
 
 % Equation 6
-function [res] = clusterSpreadL(WLc, Y, Ymin, Wc, K)
-    res = WLc + ((Y - Ymin) * (Wc - WLc)) / (K - Ymin);
+function [res] = clusterSpreadL(WLc, Y, Ymin, Wc, Kl)
+    res = WLc + ((Y - Ymin) * (Wc - WLc)) / (Kl - Ymin);
 end
 
-function [res] = clusterSpreadH(WHc, Y, Ymax, Wc, K)
-    res = WHc + ((Ymax - Y) * (Wc - WHc)) / (Ymax - K);
+function [res] = clusterSpreadH(WHc, Y, Ymax, Wc, Kh)
+    res = WHc + ((Ymax - Y) * (Wc - WHc)) / (Ymax - Kh);
 end

@@ -5,15 +5,21 @@ function output_image = colorCorrrect(input)
 red = input(:,:,1);
 green = input(:,:,2);
 blue = input(:,:,3);
-r_mean = mean(red(:));
-g_mean = mean(green(:));
-b_mean = mean(blue(:));
+r_mean = 1/mean(red(:));
+g_mean = 1/mean(green(:));
+b_mean = 1/mean(blue(:));
+
+max_RGB = max(max(r_mean,g_mean),b_mean);
 
 % normalize
-r_g = g_mean / r_mean;
-b_g = g_mean / b_mean;
+r_mean = r_mean/max_RGB;
+g_mean = g_mean/max_RGB;
+b_mean = b_mean/max_RGB;
 
-red = r_g * red;
-blue = b_g * blue;
+red = red * r_mean;
+green = green * g_mean;
+blue = blue * b_mean;
 
 output_image = cat(3, red, green, blue);
+
+

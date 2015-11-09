@@ -9,7 +9,6 @@ for i=1:numel(files)
     fname = fullfile(dirname, files{i});
     img = imread(fname);
     res = tnm034(img);
-    
     disp(['Match for file "' fname '": ' num2str(res)]);
-    k = waitforbuttonpress;
+    waitforbuttonpress;
 end
