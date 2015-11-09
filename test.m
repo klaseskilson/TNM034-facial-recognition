@@ -13,10 +13,10 @@ for i=1:numel(files)
     img = imread(fname);
     %imshow(img)
     ycc = rgb2ycbcr(img);
+    mask1 = skinModel(ycc);
     ycc = chromaTransformation(ycc);
-    mask = skinModel(ycc);
-    %figure
-    %imshow(ycbcr2rgb(ycc));
-    imshow(mask)
-    k = waitforbuttonpress
+    mask2 = skinModel(ycc);
+    subplot(1,2,1), subimage(mask1)
+    subplot(1,2,2), subimage(mask2)
+    waitforbuttonpress
 end
