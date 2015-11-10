@@ -13,11 +13,13 @@ function id = tnm034(img)
     mask = skinModel(ycc);
     mask2 = chromasubtraction(ycc,.1); 
     eye = eyeMap(ycc);
+    mouth = mouthMap(ycc);
     
-    subplot(1,4,1) , subimage(img);
-    subplot(1,4,2) , subimage(img.*uint8(mask2));
-    subplot(1,4,3) , subimage(img.*uint8(mask));
-    subplot(1,4,4) , subimage(eye.*uint8(mask(:,:,1)));
+    subplot(1,5,1) , subimage(img);
+    subplot(1,5,2) , subimage(img.*uint8(mask2));
+    subplot(1,5,3) , subimage(img.*uint8(mask));
+    subplot(1,5,4) , subimage(eye.*uint8(mask(:,:,1)));
+    subplot(1,5,5) , subimage(mouth.*uint8(mask(:,:,1)));
 
     
     id = 0;
