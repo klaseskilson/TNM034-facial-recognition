@@ -12,7 +12,7 @@ function id = tnm034(img)
     ycc = chromaTransformation(ycc);
     mask = skinModel(ycc);
     mask2 = chromasubtraction(ycc,.1); 
-    eye = eyeMap(img);
+    eye = eyeMap(ycc);
     
     subplot(1,4,1) , subimage(img);
     subplot(1,4,2) , subimage(img.*uint8(mask2));
