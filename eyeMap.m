@@ -6,12 +6,11 @@ function [eyeMap] = eyeMap(img)
     Cr = im2double(img(:,:,3));
  
 
-    Cbsqr = Cb.^2;
-    Cbsqr = 255*Cbsqr/max(max(Cbsqr));
-    CbNegsqr = 255-(Cr.^2);
-    CbNegsqr = 255*CbNegsqr/max(max(CbNegsqr));
-    CbCr = Cb./Cr;
-    CbCr = 255*CbCr/max(max(CbCr));
+    Cbsqr = normalize(Cb.^2, 255);
+    CbNegsqr = normalize(255-(Cr.^2), 255);
+    % CbNegsqr = 255*CbNegsqr/max(max(CbNegsqr));
+    CbCr = normalize(Cb./Cr, 255);
+    % CbCr = 255*CbCr/max(max(CbCr));
     
     %According to formula 1 in "Face Detection in Color Images"
     eyeMapC =  (1/3) * (Cbsqr+CbNegsqr +CbCr);

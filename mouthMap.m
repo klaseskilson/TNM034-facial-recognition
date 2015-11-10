@@ -6,9 +6,9 @@ function [mouthMap] = mouthMap(img, faceMask)
     mask = double(faceMask(:,:,1));
     CrSquared = Cr.^2;
     CrCb = (Cr./Cb);
-        
-    CrSquared = 255*CrSquared/max(max(CrSquared));
-    CrCb = 255*CrCb/max(max(CrCb));
+
+    CrSquared = normalize(CrSquared, 255);
+    CrCb = normalize(CrCb, 255);
     
     eta = 0.95 * mean(mean(CrSquared))/mean(mean(CrCb));
     
