@@ -23,7 +23,7 @@ function [ chroma_img ] = chromaTransformation(img)
     % binary threshold images
     Yl = uint8(Y < Kl);
     Yh = uint8(Y > Kh);
-    Yi = uint8((Y > Kl & Y < Kh));
+    Yi = uint8(Y > Kl) .* uint8(Y < Kh);
     % calc center values Cb, Equation 7
     Ba = 108;
     Bb = 118;
@@ -54,16 +54,15 @@ function [ chroma_img ] = chromaTransformation(img)
     SpreadR = SpreadRl .* Yl + SpreadRh .* Yh;
     
     % actually calculate the new Cb and Cr, equation 5
-    krConst = 154; 
-    kbConst = 108;
+    krConst = 168;
+    kbConst = 184;
     CPrimB = cPrim(Cb, Wcb, SpreadB, CbCenter, kbConst);
     CPrimR = cPrim(Cr, Wcr, SpreadR, CrCenter, krConst);
     % combine the results of the different threshold images
     CPrimBi = Cb .* Yi;
-    CprimB = CPrimB + CPrimBi;
+    CprimB = CPrimB.*(Yl+Yh) + CPrimBi;
     CPrimRi = Cr .* Yi;
-    CprimR = CPrimR + CPrimRi;
-    
+    CprimR = CPrimR.*(Yl+Yh) + CPrimRi;
     % merge into one image
     chroma_img = Y;
     chroma_img(:, :, 2) = CprimB;

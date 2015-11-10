@@ -28,6 +28,7 @@ for x=1:imgX
         value = [ double(transformedImage(x,y,2)) - cx;
                   double(transformedImage(x,y,3)) - cy ];
         pos = trans*value;
-        faceMask(x,y) = ( ((pos(1) - ecx)^2 / a2 + (pos(2) - ecy)^2 / b2) <= 1);
+        %should be <= 1 here but its to narrow for good result
+        faceMask(x,y) = ( ((pos(1) - ecx)^2 / a2 + (pos(2) - ecy)^2 / b2) <= 2);
     end
 end

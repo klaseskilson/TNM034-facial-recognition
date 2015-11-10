@@ -13,9 +13,11 @@ function id = tnm034(img)
     mask = skinModel(ycc);
     mask(:,:,2) = mask;
     mask(:,:,3) = mask(:,:,2);
-    subplot(1,3,1) , subimage(img);
-    subplot(1,3,2) , subimage(img.*uint8(mask));
-    subplot(1,3,3) , subimage(ycc);
+    
+    subplot(1,4,1) , subimage(img);
+    subplot(1,4,2) , subimage(ycbcr2rgb(ycc));
+    subplot(1,4,3) , subimage(img.*uint8(mask));
+    
     
     id = 0;
 end
