@@ -32,5 +32,10 @@ for x=1:imgX
     end
 end
 
+% morphological operations
+diskSize = 6; % temp value
+structElem = strel('disk', diskSize);
+faceMask = imerode(imdilate(faceMask, structElem), structElem);
+
 faceMask(:,:,2) = faceMask;
 faceMask(:,:,3) = faceMask(:,:,2);
