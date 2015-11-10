@@ -1,3 +1,4 @@
+% Mouth map YCC img
 function [mouthMap] = mouthMap(img, faceMask)
    
     Cb = im2double(img(:,:,2));
@@ -12,16 +13,10 @@ function [mouthMap] = mouthMap(img, faceMask)
     eta = 0.95 * mean(mean(CrSquared))/mean(mean(CrCb));
     
     mouthMap = CrSquared.*((CrSquared -(eta.*CrCb)).^2);
-    mouthMap =  uint8(255*mouthMap/max(max(mouthMap)));   
+    mouthMap = uint8(255*mouthMap/max(max(mouthMap)));
 
     diskSize = 10;
     kernel = strel('disk', diskSize);
     mouthMap = imerode(imdilate(mouthMap, kernel), kernel);
-    diskSize = 20;
-    kernel = strel('disk', diskSize);
-    mouthMap = imerode(imdilate(mouthMap, kernel), kernel);
-    diskSize = 4;
-    kernel = strel('disk', diskSize);
-    mouthMap = imdilate(imerode(mouthMap, kernel), kernel);
 
 end
