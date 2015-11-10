@@ -1,6 +1,5 @@
-%%%%%%%%%%%%%%%%%%
-
-function faceMask  = skinModel(transformedImage)
+% Create face mask from YCC image
+function [faceMask] = skinModel(transformedImage)
 % facemask is the elliptical model for skin tones
 % transformedImage is the chroma transformed image
 
@@ -32,3 +31,17 @@ for x=1:imgX
         faceMask(x,y) = ( ((pos(1) - ecx)^2 / a2 + (pos(2) - ecy)^2 / b2) <= 2);
     end
 end
+
+% morphological operations, double closing and one opening
+diskSize = 10;
+kernel = strel('disk', diskSize);
+faceMask = imerode(imdilate(faceMask, kernel), kernel);
+diskSize = 20;
+kernel = strel('disk', diskSize);
+faceMask = imerode(imdilate(faceMask, kernel), kernel);
+diskSize = 4;
+kernel = strel('disk', diskSize);
+faceMask = imdilate(imerode(faceMask, kernel), kernel);
+
+faceMask(:,:,2) = faceMask;
+faceMask(:,:,3) = faceMask(:,:,2);
