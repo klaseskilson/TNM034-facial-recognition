@@ -1,6 +1,5 @@
-%%%%%%%%%%%%%%%%%%
-
-function faceMask  = skinModel(transformedImage)
+% Create face mask from YCC image
+function [faceMask] = skinModel(transformedImage)
 % facemask is the elliptical model for skin tones
 % transformedImage is the chroma transformed image
 
@@ -32,3 +31,6 @@ for x=1:imgX
         faceMask(x,y) = ( ((pos(1) - ecx)^2 / a2 + (pos(2) - ecy)^2 / b2) <= 2);
     end
 end
+
+faceMask(:,:,2) = faceMask;
+faceMask(:,:,3) = faceMask(:,:,2);

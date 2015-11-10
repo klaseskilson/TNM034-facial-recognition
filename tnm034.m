@@ -11,8 +11,6 @@ function id = tnm034(img)
     ycc = rgb2ycbcr(img);
     ycc = chromaTransformation(ycc);
     mask = skinModel(ycc);
-    mask(:,:,2) = mask;
-    mask(:,:,3) = mask(:,:,2);
     
     subplot(1,4,1) , subimage(img);
     subplot(1,4,2) , subimage(ycbcr2rgb(ycc));
