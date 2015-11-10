@@ -43,5 +43,7 @@ diskSize = 4;
 kernel = strel('disk', diskSize);
 faceMask = imdilate(imerode(faceMask, kernel), kernel);
 
+faceMask = imfill(faceMask,'holes');
+
 faceMask(:,:,2) = faceMask;
 faceMask(:,:,3) = faceMask(:,:,2);
