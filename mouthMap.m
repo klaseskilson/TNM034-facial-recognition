@@ -1,15 +1,27 @@
-function [mouthMap] = mouthMap(img)
+function [mouthMap] = mouthMap(img, faceMask)
    
-    Cb = img(:,:,2);
-    Cr = img(:,:,3);
+    Cb = im2double(img(:,:,2));
+    Cr = im2double(img(:,:,3));
+    mask = double(faceMask(:,:,1));
     CrSquared = Cr.^2;
-    CrCb = Cr./Cb;
+    CrCb = (Cr./Cb);
+        
+    CrSquared = 255*CrSquared/max(max(CrSquared));
+    CrCb = 255*CrCb/max(max(CrCb));
+    
+    eta = 0.95 * mean(mean(CrSquared))/mean(mean(CrCb));
+    
+    mouthMap = CrSquared.*((CrSquared -(eta.*CrCb)).^2);
+    mouthMap =  uint8(255*mouthMap/max(max(mouthMap)));   
 
-    sumCrSquared = (1/sum(size(img)))*sum(sum(CrSquared));
-    sumCrCb= (1/sum(size(img)))*sum(sum(CrCb));
-    eta = 0.95 * sumCrSquared/sumCrCb;
-    mouthMap = CrSquared.*((CrSquared-(eta.*CrCb)).^2);
-    %diskSize = 2;
-    %kernel = strel('disk', diskSize);
-    %mouthMap = imdilate(mouthMap, kernel);
+    diskSize = 10;
+    kernel = strel('disk', diskSize);
+    mouthMap = imerode(imdilate(mouthMap, kernel), kernel);
+    diskSize = 20;
+    kernel = strel('disk', diskSize);
+    mouthMap = imerode(imdilate(mouthMap, kernel), kernel);
+    diskSize = 4;
+    kernel = strel('disk', diskSize);
+    mouthMap = imdilate(imerode(mouthMap, kernel), kernel);
+
 end

@@ -23,7 +23,7 @@ function [ chroma_img ] = chromaTransformation(img)
     % binary threshold images
     Yl = uint8(Y < Kl);
     Yh = uint8(Y > Kh);
-    Yi = uint8(Y > Kl) .* uint8(Y < Kh);
+    Yi = uint8(Y >= Kl) .* uint8(Y <= Kh);
     % calc center values Cb, Equation 7
     Ba = 108;
     Bb = 118;
@@ -61,6 +61,7 @@ function [ chroma_img ] = chromaTransformation(img)
     % combine the results of the different threshold images
     CPrimBi = Cb .* Yi;
     CprimB = CPrimB.*(Yl+Yh) + CPrimBi;
+    
     CPrimRi = Cr .* Yi;
     CprimR = CPrimR.*(Yl+Yh) + CPrimRi;
     % merge into one image
