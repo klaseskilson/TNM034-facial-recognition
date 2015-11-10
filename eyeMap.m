@@ -12,13 +12,17 @@ function [eyeMap] = eyeMap(img)
 
     %Requires Image Processing Toolbox.
     %Creates a Morphological structuring element, namely a disk which
-    %we can use for erision/dilation. 4 is the radius.
-    SE = strel('disk', 6);
-    NOMINATOR = imdilate(Y, SE);
-    DENOMINATOR = imerode(Y, SE);
+    %we can use for erision/dilation. 4 is the radius.diskSize = 10;
+    diskSize = 4;
+    kernel = strel('disk', diskSize);
+    NOMINATOR = imdilate(Y, kernel);
+    DENOMINATOR = imerode(Y, kernel);
     eyeMapL = NOMINATOR./(DENOMINATOR+1);
     
     %Return value
     eyeMap = eyeMapL.*eyeMapC;
+    diskSize = 4;
+    kernel = strel('disk', diskSize);
+    eyeMap = imerode(eyeMap, kernel);
     
 end

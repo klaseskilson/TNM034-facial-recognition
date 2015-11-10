@@ -11,11 +11,13 @@ function id = tnm034(img)
     ycc = rgb2ycbcr(img);
     ycc = chromaTransformation(ycc);
     mask = skinModel(ycc);
+    eye = eyeMap(img);
     
     subplot(1,4,1) , subimage(img);
     subplot(1,4,2) , subimage(ycbcr2rgb(ycc));
     subplot(1,4,3) , subimage(img.*uint8(mask));
-    
+    subplot(1,4,4) , subimage(eye.*uint8(mask(:,:,1)));
+
     
     id = 0;
 end
