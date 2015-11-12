@@ -28,6 +28,5 @@ function [eyeMap] = eyeMap(img)
     eyeMap = eyeMapL.*eyeMapC;
     diskSize = 4;
     kernel = strel('disk', diskSize);
-    imerode(eyeMap, kernel);
-    eyeMap = uint8(eyeMap);
+    eye = imerode(eyeMap, kernel);
 end
