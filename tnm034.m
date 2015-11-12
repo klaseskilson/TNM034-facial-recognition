@@ -14,7 +14,7 @@ function id = tnm034(img)
     
     mask = skinModel(ycc);
     eye = eyeMap(yccorig);
-    eye = eye.*double(mask(:,:,1));
+    eye = double(eye).*double(mask(:,:,1));
     eye = normalize(eye,255);
     eye = uint8(eye);
     diskSize = 4;
