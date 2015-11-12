@@ -11,19 +11,15 @@ function id = tnm034(img)
     ycc = rgb2ycbcr(img);
     yccorig = ycc;
     ycc = chromaTransformation(ycc);
-    
     mask = skinModel(ycc);
+    
     eye = eyeMap(yccorig);
-    eye = double(eye).*double(mask(:,:,1));
-    eye = normalize(eye,255);
+    eye = normalize(double(eye).*double(mask(:,:,1)), 255);
     eye = uint8(eye);
-    diskSize = 4;
-    kernel = strel('disk', diskSize);
-    eye = imerode(eye, kernel);
 
     cropped = faceCrop(img,mask);
     mouth = mouthMap(yccorig, mask);
-    mouth = normalize(mouth,255);
+    mouth = normalize(mouth, 255);
     subplot(1,4,1) , subimage(img);
     subplot(1,4,2) , subimage(img.*uint8(mask));
     subplot(1,4,3) , subimage(cropped);
