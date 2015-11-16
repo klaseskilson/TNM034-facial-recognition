@@ -35,13 +35,13 @@ end
 % morphological operations, double closing and one opening
 diskSize = 10;
 kernel = strel('disk', diskSize);
-faceMask = imerode(imdilate(faceMask, kernel), kernel);
+faceMask = imclose(faceMask, kernel);
 diskSize = 20;
 kernel = strel('disk', diskSize);
-faceMask = imerode(imdilate(faceMask, kernel), kernel);
+faceMask = imclose(faceMask, kernel);
 diskSize = 4;
 kernel = strel('disk', diskSize);
-faceMask = imdilate(imerode(faceMask, kernel), kernel);
+faceMask = imopen(faceMask, kernel);
 % fill in blanks of the objects
 faceMask = imfill(faceMask,'holes');
 
