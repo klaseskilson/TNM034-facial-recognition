@@ -11,22 +11,26 @@ function id = tnm034(img)
     ycc = rgb2ycbcr(img);
     yccorig = ycc;
     ycc = chromaTransformation(ycc);
-    
     mask = skinModel(ycc);
+    
     eye = eyeMap(yccorig);
-    
     mouth = mouthMap(yccorig, mask);    
-    eye = uint8(eye);
-    eye = normalize(eye,255);
-    faceTriangle(eye, mouth);
     
-    eye = faceCrop(eye,mask);
+    eye = normalize(double(eye).*double(mask(:,:,1)), 255);
+    eye = uint8(eye);
+
+    [le,re, m] = faceTriangle(faceCrop(eye,mask), faceCrop(mouth,mask));
     cropped = faceCrop(img,mask);
-    mouth = faceCrop(mouth,mask);
-    subplot(1,4,1) , subimage(img);
+    
+    polygon = int32([m(1), m(2), le(1), le(2), re(1), re(2)]);
+    shapeInserter = vision.ShapeInserter('Shape','Polygons','BorderColor','Custom', 'CustomBorderColor', uint8([255 0 0]));
+    J = step(shapeInserter, cropped, polygon);
+    
+    
+    subplot(1,4,1) , subimage(J);
     subplot(1,4,2) , subimage(cropped);
-    subplot(1,4,3) , subimage(eye > 170);
-    subplot(1,4,4) , subimage(mouth);
+    subplot(1,4,3) , subimage(eye > 230);
+    subplot(1,4,4) , subimage(mouth > 150);
     
     id = 666;
 end

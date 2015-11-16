@@ -46,13 +46,6 @@ faceMask = imdilate(imerode(faceMask, kernel), kernel);
 faceMask = imfill(faceMask,'holes');
 
 % assume largest area is face and use only that using matlab magic
-CC = bwconncomp(faceMask);
-numPixels = cellfun(@numel,CC.PixelIdxList);
-[biggest,idx] = max(numPixels);
-out = zeros(size(faceMask));
-out(CC.PixelIdxList{idx}) = faceMask(CC.PixelIdxList{idx});
-
-faceMask = out;
-
+faceMask = largestArea(faceMask);
 faceMask(:,:,2) = faceMask;
 faceMask(:,:,3) = faceMask(:,:,2);
