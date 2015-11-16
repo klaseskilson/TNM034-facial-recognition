@@ -23,9 +23,7 @@ function id = tnm034(img)
     cropped = faceCrop(img,mask);
     
     polygon = int32([m(1), m(2), le(1), le(2), re(1), re(2)]);
-    shapeInserter = vision.ShapeInserter('Shape','Polygons','BorderColor','Custom', 'CustomBorderColor', uint8([255 0 0]));
-    J = step(shapeInserter, cropped, polygon);
-    
+    J = insertShape(cropped, 'Polygon', polygon, 'Color', 'red', 'Opacity', 0.7);
     
     subplot(1,4,1) , subimage(J);
     subplot(1,4,2) , subimage(cropped);
