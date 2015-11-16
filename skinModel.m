@@ -32,16 +32,16 @@ for x=1:imgX
     end
 end
 
-% morphological operations, double closing and one opening
-diskSize = 10;
-kernel = strel('disk', diskSize);
-faceMask = imclose(faceMask, kernel);
+% morphological operations, closing, open, closing
 diskSize = 20;
 kernel = strel('disk', diskSize);
 faceMask = imclose(faceMask, kernel);
 diskSize = 4;
 kernel = strel('disk', diskSize);
 faceMask = imopen(faceMask, kernel);
+diskSize = 25;
+kernel = strel('disk', diskSize);
+faceMask = imclose(faceMask, kernel);
 % fill in blanks of the objects
 faceMask = imfill(faceMask,'holes');
 
