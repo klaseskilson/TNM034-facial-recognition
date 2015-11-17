@@ -25,10 +25,10 @@ function id = tnm034(img)
     polygon = int32([m(1), m(2), le(1), le(2), re(1), re(2)]);
     J = insertShape(cropped, 'Polygon', polygon, 'Color', 'red', 'Opacity', 0.7);
     
-    subplot(1,4,1) , subimage(J);
-    subplot(1,4,2) , subimage(cropped);
-    subplot(1,4,3) , subimage(eye > 230);
-    subplot(1,4,4) , subimage(mouth > 150);
+    subplot(2,2,1) , subimage(J);
+    subplot(2,2,2) , subimage(img .* uint8(mask));
+    subplot(2,2,3) , subimage(eye > 230);
+    subplot(2,2,4) , subimage(mouth > 150);
     
     id = 666;
 end
