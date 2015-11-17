@@ -19,12 +19,19 @@ function id = tnm034(img)
     eye = normalize(double(eye).*double(mask(:,:,1)), 255);
     eye = uint8(eye);
 
+    % crop image
     [le,re, m] = faceTriangle(faceCrop(eye,mask), faceCrop(mouth,mask));
     cropped = faceCrop(img,mask);
     
+    % draw triangle on face
     polygon = int32([m(1), m(2), le(1), le(2), re(1), re(2)]);
     J = insertShape(cropped, 'Polygon', polygon, 'Color', 'red', 'Opacity', 0.7);
     
+    % prepare for eigen faces
+    croppedGray = rgb2gray(cropped);
+    pcaCroppedGray = pca(croppedGray);
+    
+    % display debug images
     subplot(2,2,1) , subimage(J);
     subplot(2,2,2) , subimage(img .* uint8(mask));
     subplot(2,2,3) , subimage(eye > 230);
