@@ -17,6 +17,6 @@ function [mouthMap] = mouthMap(img, faceMask)
 
     diskSize = 10;
     kernel = strel('disk', diskSize);
-    mouthMap = imerode(imdilate(mouthMap, kernel), kernel);
+    mouthMap = imclose(mouthMap, kernel);
 
 end
