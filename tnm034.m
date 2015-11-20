@@ -37,12 +37,7 @@ function id = tnm034(img)
     pcaCroppedGray = pca(croppedGray);
     
     % call global eigenDatabase
-    global eigenDatabase
-    eigenStatus = isempty(eigenDatabase)
-    whos eigenDatabase
-    if isempty(eigenDatabase) == 1
-        eigenDatabase = createEigenDatabase('images/db1')
-    end
+    eigenDatabase = createEigenDatabase('images/db1');
     
     % display debug images
     subplot(2,2,1) , subimage(J);

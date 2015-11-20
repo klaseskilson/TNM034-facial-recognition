@@ -40,7 +40,7 @@ for i=1:eyesDetected
               pre = firstEye;
             end
             if ple(2) > pm(2) | pre(2) > pm(2)
-                'eye below mouth'
+                disp('eye below mouth')
                 continue
             end
             %First score: lower difference in Y is good
