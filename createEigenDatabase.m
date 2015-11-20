@@ -1,5 +1,7 @@
 function [ database ] = createEigenDatabase( dirname )
 %CREATEEIGENDATABASE create eigen database from images in folder
+%   to clear the database and allow for re-creation, run 
+%   `clear global eigenDatabase eigenDatabaseDirname`
     
     if nargin == 0  
         dirname = 'images/db1'

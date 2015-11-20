@@ -8,8 +8,9 @@ function [ cropped ] = detectAndNormalize( img )
     ycc = chromaTransformation(ycc);
     
     % detect skin
-    mask = skinModel(ycc);
-    
+    skinModelThreshold = 1.5;
+    mask = skinModel(ycc, skinModelThreshold);
+
     % detect eyes and mouth
     eye = eyeMap(yccorig);
     mouth = mouthMap(yccorig, mask);    
