@@ -1,24 +1,33 @@
 % Principal component analysis
-function [eigenVector, meanImg] = pca(Img)
+function [Eigenvector, meanImg] = pca(Img, k)
 %   img - the image to analyse
+%   k   - number of components to return
+
+    if nargin < 2 
+        k = 10
+    end
 
     [w, h] = size(Img);
-    meanImg = mean(Img(:));
+    meanImg = mean(Img);
     %Repmat function returns a repeated copy of the array.
-    Xm = double(Img) - repmat(meanImg, w, h);
+    Xm = double(Img) - repmat(meanImg, w, 1);
 
     if(w > h)
         S = Xm'*Xm;
         %Retrieve Eigen Values
-        [eigenVector, D] = eig(S);
+        [Eigenvector, D] = eig(S);
     else
         S = Xm*Xm';
-        [eigenVector, D] = eig(S);
-        eigenVector = Xm'*eigenVector;
-        D = normalize(D, 255);
+        [Eigenvector, D] = eig(S);
+        Eigenvector = Xm'*Eigenvector;
+        for i = 1:w
+            Eigenvector(:,i) = Eigenvector(:,i)/norm(Eigenvector(:,i));
+        end
+        % D = normalize(D, 255);
     end
 
-    %Sort Eigenvalues
+    % sort Eigenvalues and eigen vectors
     [D, i] = sort(diag(D), 'descend');
-    eigenVector = eigenVector(:,i);
+    Eigenvector = Eigenvector(:, i);
+    Eigenvector = Eigenvector(:, 1:k);
 end
