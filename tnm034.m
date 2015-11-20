@@ -14,8 +14,9 @@ function id = tnm034(img)
     ycc = chromaTransformation(ycc);
     
     % detect skin
-    mask = skinModel(ycc);
-    
+    skinModelThreshold = 1.5;
+    mask = skinModel(ycc, skinModelThreshold);
+
     % detect eyes and mouth
     eye = eyeMap(yccorig);
     mouth = mouthMap(yccorig, mask);    
@@ -30,7 +31,7 @@ function id = tnm034(img)
     
     % draw triangle on face
     polygon = int32([m(1), m(2), le(1), le(2), re(1), re(2)]);
-    J = insertShape(cropped, 'Polygon', polygon, 'Color', 'red', 'Opacity', 0.7);
+    J = insertShape(cropped, 'FilledPolygon', polygon, 'Color', 'red', 'Opacity', 0.7);
     
     % prepare for eigen faces
     croppedGray = rgb2gray(cropped);
@@ -42,8 +43,8 @@ function id = tnm034(img)
     % display debug images
     subplot(2,2,1) , subimage(J);
     subplot(2,2,2) , subimage(img .* uint8(mask));
-    subplot(2,2,3) , subimage(eye > 230);
-    subplot(2,2,4) , subimage(mouth > 150);
+    subplot(2,2,3) , subimage(faceCrop(eye,mask));
+    subplot(2,2,4) , subimage(mouth);
     
     id = 666;
 end

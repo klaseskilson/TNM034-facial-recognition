@@ -1,7 +1,9 @@
 % Create face mask from YCC image
-function [faceMask] = skinModel(transformedImage)
+function [faceMask] = skinModel(transformedImage, threshold)
 % facemask is the elliptical model for skin tones
 % transformedImage is the chroma transformed image
+% threshold value sets how strict the skin model should be to values
+% in the image
 
 theta = 2.53;
 cx = 109.38;
@@ -28,7 +30,7 @@ for x=1:imgX
                   double(transformedImage(x,y,3)) - cy ];
         pos = trans*value;
         %should be <= 1 here but its to narrow for good result
-        faceMask(x,y) = ( ((pos(1) - ecx)^2 / a2 + (pos(2) - ecy)^2 / b2) <= 1.5);
+        faceMask(x,y) = ( ((pos(1) - ecx)^2 / a2 + (pos(2) - ecy)^2 / b2) <= threshold);
     end
 end
 
