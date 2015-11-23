@@ -13,10 +13,7 @@ function id = tnm034(img)
     yccorig = ycc;
     ycc = chromaTransformation(ycc);
     
-<<<<<<< HEAD
-=======
     % detect skin
->>>>>>> 5a00b6476e25ea51a675ee949cf30449a6f2c37d
     skinModelThreshold = 1.5;
     
     mask = skinModel(ycc, skinModelThreshold);
