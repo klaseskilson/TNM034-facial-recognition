@@ -41,7 +41,7 @@ function id = tnm034(img)
         end
     end
     if(eyeTresh == 0 || mouthTresh ==0 || sum(le+re+m) == 0)
-        id = 0;
+        id = -1;
         return
     end
     cropped = faceCrop(img,mask);
