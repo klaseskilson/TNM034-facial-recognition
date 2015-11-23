@@ -31,17 +31,17 @@ function id = tnm034(img)
     numMouths = 0;
     eyeTresh = 230;
     mouthTresh= 120;
-    while((numEyes < 2 && numMouths < 1) && (eyeTresh > 0 && mouthTresh > 0))
+    while((numEyes < 2 || numMouths < 1) && (eyeTresh > 0 && mouthTresh > 0))
         [le,re, m, numEyes, numMouths] = faceTriangle(faceCrop(eye,mask), faceCrop(mouth,mask), eyeTresh, mouthTresh);
         if(numMouths < 1)
           mouthTresh = mouthTresh - 10;
-        elseif(numEyes < 2)
+        end
+        if(numEyes < 2)
           eyeTresh = eyeTresh - 10;
         end
     end
-    if(eyeTresh == 0 || mouthTresh ==0)
+    if(eyeTresh == 0 || mouthTresh ==0 || sum(le+re+m) == 0)
         id = 0;
-        imshow(img);
         return
     end
     cropped = faceCrop(img,mask);
@@ -50,6 +50,7 @@ function id = tnm034(img)
     pts = [le, 1;
            re, 1;
            m, 1];
+    pts
     alignedFace = alignFace(cropped, pts);
     
     
@@ -60,7 +61,7 @@ function id = tnm034(img)
     % prepare for eigen faces
     croppedGray = rgb2gray(cropped);
     pcaCroppedGray = pca(croppedGray);
-    
+
     % call global eigenDatabase
     eigenDatabase = createEigenDatabase('images/db1');
     

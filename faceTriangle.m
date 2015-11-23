@@ -13,7 +13,7 @@ imgSize = size(eye);
 potentialMouths = [];
 for i=1:mouthsDetected
   % if the region is twice as wide than its height, its a potential mouth
-  if(stats.BoundingBox(i,3)/stats.BoundingBox(i,4) > 1.5)
+  if(stats.BoundingBox(i,3)/stats.BoundingBox(i,4) > 1)
       potentialMouths(j, :) = stats.Centroid(i,:);
       j = j+1;
   end
@@ -45,8 +45,7 @@ if(potentialMouths)
                   ple = secondEye;
                   pre = firstEye;
                 end
-                if ple(2) > pm(2) | pre(2) > pm(2)
-                    'mouth over eyes'
+                if ple(2) > pm(2) || pre(2) > pm(2)
                     continue
                 end
                 %First score: lower difference in Y is good
@@ -81,8 +80,8 @@ else
     leftEye = [0 0];
     rightEye = [0 0];
     mouthPos = [0 0];
-    eyeCount = 0;
-    mouthCount = 0;
+    eyeCount = eyesDetected;
+    mouthCount = mouthDetected;
 end
 
 end
