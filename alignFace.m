@@ -11,6 +11,7 @@ matching = [ width*0.25,  height*0.4, 1;
 
 Rcb = imref2d([height,uint32(width)])
 transform = mldivide(pts,matching);
+transform(:,3) = [0; 0; 1];
 transform = affine2d(transform);
 transformedImage = imwarp(image,transform, 'OutputView', Rcb);
 

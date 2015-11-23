@@ -19,8 +19,10 @@ function [ cropped ] = detectAndNormalize( img )
     eye = normalize(double(eye).*double(mask(:,:,1)), 255);
     eye = uint8(eye);
 
+    eyeTresh = 230;
+    mouthTresh= 120;
     % crop image
-    [le,re, m] = faceTriangle(faceCrop(eye,mask), faceCrop(mouth,mask));
+    [le,re, m] = faceTriangle(faceCrop(eye,mask), faceCrop(mouth,mask), eyeTresh, mouthTresh);
     cropped = faceCrop(img,mask);
 end
 
