@@ -1,8 +1,8 @@
-function [ leftEye, rightEye, mouthPos] = faceTriangle(eye, mouth)
+function [ leftEye, rightEye, mouthPos, eyeCount, mouthCount] = faceTriangle(eye, mouth, eyeTreshold, mouthTreshold)
 %faceTriangle extract three points to form a triangle from eye and mouth map
 
-mouth = mouth>120;
-eye = eye > 230;
+mouth = mouth > mouthTreshold;
+eye = eye > eyeTreshold;
 diskSize = 8;
 kernel = strel('disk', diskSize);
 eye = imdilate(eye, kernel);
@@ -23,8 +23,8 @@ stats = regionprops('table',eye,'Centroid',...
  'MajorAxisLength','MinorAxisLength');
 
 %DEBUG prints number of mouths and eyes found
-eyesDetected = size(stats.Centroid,1)
-mouthCount = size(potentialMouths, 1)
+eyesDetected = size(stats.Centroid,1);
+mouthDetected = size(potentialMouths, 1);
 
 potentialComb = [];
 if(potentialMouths)
@@ -32,7 +32,7 @@ if(potentialMouths)
     pc = 1;
     for i=1:eyesDetected
         for j=i+1:eyesDetected
-            for k=1:mouthCount
+            for k=1:mouthDetected
                 % potential mouth
                 pm = potentialMouths(k, :);
                 % potential left eye, PLE, potential right eye PRE
@@ -46,6 +46,7 @@ if(potentialMouths)
                   pre = firstEye;
                 end
                 if ple(2) > pm(2) | pre(2) > pm(2)
+                    'mouth over eyes'
                     continue
                 end
                 %First score: lower difference in Y is good
@@ -73,10 +74,15 @@ if(potentialComb & size(potentialComb,1) > 0)
     leftEye = sortedComb(1,1:2);
     rightEye = sortedComb(1,3:4);
     mouthPos = sortedComb(1,5:6);
+
+    eyeCount = eyesDetected;
+    mouthCount= mouthDetected;
 else
     leftEye = [0 0];
     rightEye = [0 0];
     mouthPos = [0 0];
+    eyeCount = 0;
+    mouthCount = 0;
 end
 
 end

@@ -12,10 +12,8 @@ function id = tnm034(img)
     yccorig = ycc;
     ycc = chromaTransformation(ycc);
     
-    le = [0 0];
-    re = le;
-    m = le;
     skinModelThreshold = 1.5;
+    
     mask = skinModel(ycc, skinModelThreshold);
 
     eye = eyeMap(yccorig);
@@ -25,8 +23,31 @@ function id = tnm034(img)
     eye = uint8(eye);
 
     % crop image
-    [le,re, m] = faceTriangle(faceCrop(eye,mask), faceCrop(mouth,mask));
+    numEyes = 0;
+    numMouths = 0;
+    eyeTresh = 230;
+    mouthTresh= 120;
+    while((numEyes < 2 && numMouths < 1) && (eyeTresh > 0 && mouthTresh > 0))
+        [le,re, m, numEyes, numMouths] = faceTriangle(faceCrop(eye,mask), faceCrop(mouth,mask), eyeTresh, mouthTresh);
+        if(numMouths < 1)
+          mouthTresh = mouthTresh - 10;
+        elseif(numEyes < 2)
+          eyeTresh = eyeTresh - 10;
+        end
+    end
+    if(eyeTresh == 0 || mouthTresh ==0)
+        id = 0;
+        imshow(img);
+        return
+    end
     cropped = faceCrop(img,mask);
+    
+    % warp faces to match eachother
+    pts = [le, 1;
+           re, 1;
+           m, 1];
+    alignedFace = alignFace(cropped, pts);
+    
     
     % draw triangle on face
     polygon = int32([m(1), m(2), le(1), le(2), re(1), re(2)]);
@@ -35,12 +56,14 @@ function id = tnm034(img)
     % prepare for eigen faces
     croppedGray = rgb2gray(cropped);
     pcaCroppedGray = pca(croppedGray);
-    
+        
     % display debug images
     subplot(2,2,1) , subimage(J);
-    subplot(2,2,2) , subimage(img .* uint8(mask));
-    subplot(2,2,3) , subimage(faceCrop(eye,mask));
-    subplot(2,2,4) , subimage(mouth);
+    subplot(2,2,2) , subimage(alignedFace);
+    croppedWEyes = cropped;
+    croppedWEyes(:,:,1) = croppedWEyes(:,:,1) + uint8(faceCrop(eye > 230,mask)*255);
+    subplot(2,2,3) , subimage(croppedWEyes);
+    subplot(2,2,4) , subimage(mouth > mouthTresh);
     
     id = 666;
 end
