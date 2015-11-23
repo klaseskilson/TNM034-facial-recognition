@@ -1,4 +1,4 @@
-function [ cropped ] = detectAndNormalize( img )
+function [ aligned ] = detectAndNormalize( img )
 %DETECTANDNORMALIZE Detect face features and normalize and crop RGB image img
 
     % adjust color and colorspace
@@ -9,6 +9,7 @@ function [ cropped ] = detectAndNormalize( img )
     
     % detect skin
     skinModelThreshold = 1.5;
+    
     mask = skinModel(ycc, skinModelThreshold);
 
     % detect eyes and mouth
@@ -19,10 +20,30 @@ function [ cropped ] = detectAndNormalize( img )
     eye = normalize(double(eye).*double(mask(:,:,1)), 255);
     eye = uint8(eye);
 
+    % crop image
+    numEyes = 0;
+    numMouths = 0;
     eyeTresh = 230;
     mouthTresh= 120;
-    % crop image
-    [le,re, m] = faceTriangle(faceCrop(eye,mask), faceCrop(mouth,mask), eyeTresh, mouthTresh);
+    while((numEyes < 2 || numMouths < 1) && (eyeTresh > 0 && mouthTresh > 0))
+        [le,re, m, numEyes, numMouths] = faceTriangle(faceCrop(eye,mask), faceCrop(mouth,mask), eyeTresh, mouthTresh);
+        if(numMouths < 1)
+          mouthTresh = mouthTresh - 10;
+        end
+        if(numEyes < 2)
+          eyeTresh = eyeTresh - 10;
+        end
+    end
+    if(eyeTresh == 0 || mouthTresh ==0 || sum(le+re+m) == 0)
+        id = 0;
+        return
+    end
     cropped = faceCrop(img,mask);
+    
+    % warp faces to match eachother
+    pts = [le, 1;
+           re, 1;
+           m, 1];
+    aligned = alignFace(cropped, pts);
 end
 

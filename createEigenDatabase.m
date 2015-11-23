@@ -15,6 +15,10 @@ function [ database ] = createEigenDatabase( dirname )
         tic
         files = dir(fullfile(dirname, '*.jpg'));
         files = {files.name}';
+        
+        % k best eigen vectors for each img
+        k = 10;
+        eigenDatabase = zeros(169, k, numel(files));
 
         for i=1:numel(files)
             fname = fullfile(dirname, files{i});
@@ -22,7 +26,7 @@ function [ database ] = createEigenDatabase( dirname )
             cropped = detectAndNormalize(img);
             croppedGray = rgb2gray(cropped);
             % save pca response
-            eigenDatabase{i} = pca(croppedGray);
+            eigenDatabase(:,:,i) = pca(croppedGray, k);
         end
         disp('... done!')
         toc
