@@ -63,7 +63,7 @@ if(potentialMouths)
                 
                 result = eyeYDiff+eyeMouthDiff;
                 potentialComb(pc, :) = cat(2, ple,pre,pm, result);
-                pc = pc + 1; 
+                pc = pc + 1;
             end
         end
     end

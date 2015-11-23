@@ -6,19 +6,26 @@ function id = tnm034(img)
 % id: The identity number (integer) of the identified person, 
 % i.e '1', '2',...,'16'for the persons belonging to 'db1' and '0' for all other
 % faces.
-
+    
+    % adjust color and colorspace
     img = colorCorrect(img);
     ycc = rgb2ycbcr(img);
     yccorig = ycc;
     ycc = chromaTransformation(ycc);
     
+<<<<<<< HEAD
+=======
+    % detect skin
+>>>>>>> 5a00b6476e25ea51a675ee949cf30449a6f2c37d
     skinModelThreshold = 1.5;
     
     mask = skinModel(ycc, skinModelThreshold);
 
+    % detect eyes and mouth
     eye = eyeMap(yccorig);
     mouth = mouthMap(yccorig, mask);    
-
+    
+    % apply face mask to eye map
     eye = normalize(double(eye).*double(mask(:,:,1)), 255);
     eye = uint8(eye);
 
@@ -56,7 +63,10 @@ function id = tnm034(img)
     % prepare for eigen faces
     croppedGray = rgb2gray(cropped);
     pcaCroppedGray = pca(croppedGray);
-        
+    
+    % call global eigenDatabase
+    eigenDatabase = createEigenDatabase('images/db1');
+    
     % display debug images
     subplot(2,2,1) , subimage(J);
     subplot(2,2,2) , subimage(alignedFace);
