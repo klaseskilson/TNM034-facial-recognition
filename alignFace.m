@@ -5,9 +5,9 @@ height = 256;
 width = height*0.66;
 
 
-matching = [ width*0.25,  height*0.4, 1;
-             width*0.75, height*0.4, 1;
-             width*0.5, height*0.8, 1;];
+matching = [ width*0.25,  height*0.3, 1;
+             width*0.75, height*0.3, 1;
+             width*0.5, height*0.7, 1;];
 
 Rcb = imref2d([height,uint32(width)]);
 transform = mldivide(pts,matching);
