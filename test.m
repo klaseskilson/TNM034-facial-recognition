@@ -1,6 +1,6 @@
 clear dirname files;
 
-dirname = 'images/db1';
+dirname = 'images/db2';
 files = dir(fullfile(dirname, '*.jpg'));
 files = {files.name}';
 

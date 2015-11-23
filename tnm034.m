@@ -50,7 +50,6 @@ function id = tnm034(img)
     pts = [le, 1;
            re, 1;
            m, 1];
-    pts
     alignedFace = alignFace(cropped, pts);
     
     
@@ -59,11 +58,20 @@ function id = tnm034(img)
     J = insertShape(cropped, 'FilledPolygon', polygon, 'Color', 'red', 'Opacity', 0.7);
     
     % prepare for eigen faces
-    croppedGray = rgb2gray(cropped);
-    pcaCroppedGray = pca(croppedGray);
-
+    alignedGray = rgb2gray(alignedFace);
+    pcaImg = pca(alignedGray, 43);
+    
     % call global eigenDatabase
     eigenDatabase = createEigenDatabase('images/db1');
+    
+    for i=1:size(eigenDatabase, 3)
+        eigenIm = eigenDatabase(:, :, i) - pcaImg;
+        eigenRes(i) = abs(sum(eigenIm(:)));
+    end
+    
+    [eigenRes, idx] = sort(eigenRes)
+    % retuuurn found id!
+    id = idx(1);
     
     % display debug images
     subplot(2,2,1) , subimage(J);
@@ -72,6 +80,4 @@ function id = tnm034(img)
     croppedWEyes(:,:,1) = croppedWEyes(:,:,1) + uint8(faceCrop(eye > 230,mask)*255);
     subplot(2,2,3) , subimage(croppedWEyes);
     subplot(2,2,4) , subimage(mouth > mouthTresh);
-    
-    id = 666;
 end

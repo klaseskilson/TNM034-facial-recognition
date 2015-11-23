@@ -17,7 +17,7 @@ function [ database ] = createEigenDatabase( dirname )
         files = {files.name}';
         
         % k best eigen vectors for each img
-        k = 10;
+        k = 43;
         eigenDatabase = zeros(169, k, numel(files));
 
         for i=1:numel(files)
