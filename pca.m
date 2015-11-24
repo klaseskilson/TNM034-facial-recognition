@@ -9,8 +9,9 @@ function [Eigenvector, meanImg] = pca(Img, k)
 
     [w, h] = size(Img);
     meanImg = meanImage('images/db1');
+    meanImg = mean(meanImg);
     % Repmat function returns a repeated copy of the matrix
-    Xm = double(Img) - meanImg;
+    Xm = double(Img) - repmat(meanImg, w, 1);
 
     if(w > h)
         S = Xm'*Xm;
