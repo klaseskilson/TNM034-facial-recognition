@@ -8,21 +8,25 @@ function id = tnm034(img)
 % faces.
  
     alignedFace = detectAndNormalize(img);
-    faceSize = sum(sum(size(alignedFace)))
+    faceSize = sum(sum(size(alignedFace)));
+    
     if(faceSize > 10)    
+        %This should probably not be in here
+        numberOfEigenFaces = 90;
+    
         % prepare for eigen faces
         alignedGray = rgb2gray(alignedFace);
-        pcaImg = pca(alignedGray, 43);
+        pcaImg = pca(alignedGray, numberOfEigenFaces);
 
         % call global eigenDatabase
-        eigenDatabase = createEigenDatabase('images/db1');
-
+        eigenDatabase = createEigenDatabase('images/db1', numberOfEigenFaces);
+        
         for i=1:size(eigenDatabase, 3)
             eigenIm = eigenDatabase(:, :, i) - pcaImg;
             eigenRes(i) = abs(sum(eigenIm(:)));
         end
 
-        [eigenRes, idx] = sort(eigenRes)
+        [eigenRes, idx] = sort(eigenRes);
         % retuuurn found id!
         id = idx(1);
         % draw triangle on face
@@ -34,6 +38,4 @@ function id = tnm034(img)
     % display debug images
     subplot(2,2,1) , subimage(img);
     subplot(2,2,2) , subimage(alignedFace);
-%     subplot(2,2,4) , subimage(eye);
-%     suxsbplot(2,2,4) , subimage(mouth);
 end
