@@ -7,8 +7,9 @@ function [ aligned ] = detectAndNormalize( img )
     yccorig = ycc;
     ycc = chromaTransformation(ycc);
     
+    aligned = 0;
     % detect skin
-    skinModelThreshold = 1.5;
+    skinModelThreshold = 2;
     
     mask = skinModel(ycc, skinModelThreshold);
 
@@ -35,7 +36,6 @@ function [ aligned ] = detectAndNormalize( img )
         end
     end
     if(eyeTresh == 0 || mouthTresh ==0 || sum(le+re+m) == 0)
-        id = 0;
         return
     end
     cropped = faceCrop(img,mask);
