@@ -9,13 +9,15 @@ function id = tnm034(img)
  
     alignedFace = detectAndNormalize(img);
     
+    %This should probably not be in here
+    numberOfEigenFaces = 15;
     
     % call global eigenDatabase
-    eigenDatabase = createEigenDatabase('images/db1');
+    eigenDatabase = createEigenDatabase('images/db1', numberOfEigenFaces);
     
     % get eigen face
     alignedGray = rgb2gray(alignedFace);
-    pcaImg = pca(alignedGray, 43);
+    pcaImg = pca(alignedGray, numberOfEigenFaces);
     
     for i=1:size(eigenDatabase, 3)
         eigenIm = eigenDatabase(:, :, i) - pcaImg;

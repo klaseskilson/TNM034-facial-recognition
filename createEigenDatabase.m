@@ -1,4 +1,4 @@
-function [ database ] = createEigenDatabase( dirname )
+function [ database ] = createEigenDatabase( dirname, numberOfEigenFaces )
 %CREATEEIGENDATABASE create eigen database from images in folder
 %   to clear the database and allow for re-creation, run 
 %   `clear global eigenDatabase eigenDatabaseDirname`
@@ -17,9 +17,8 @@ function [ database ] = createEigenDatabase( dirname )
         files = {files.name}';
         
         % k best eigen vectors for each img
-        k = 43;
         % pre-allocate memory for all pca imgs
-        eigenDatabase = zeros(169, k, numel(files));
+        eigenDatabase = zeros(169, numberOfEigenFaces, numel(files));
 
         for i=1:numel(files)
             fname = fullfile(dirname, files{i});
@@ -27,7 +26,7 @@ function [ database ] = createEigenDatabase( dirname )
             cropped = detectAndNormalize(img);
             croppedGray = rgb2gray(cropped);
             % save pca response
-            eigenDatabase(:,:,i) = pca(croppedGray, k);
+            eigenDatabase(:,:,i) = pca(croppedGray, numberOfEigenFaces);
         end
         disp('... done!')
         toc
