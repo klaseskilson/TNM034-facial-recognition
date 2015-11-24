@@ -8,29 +8,29 @@ function id = tnm034(img)
 % faces.
  
     alignedFace = detectAndNormalize(img);
-    
-    
-    % prepare for eigen faces
-    alignedGray = rgb2gray(alignedFace);
-    pcaImg = pca(alignedGray, 43);
-    
-    % call global eigenDatabase
-    eigenDatabase = createEigenDatabase('images/db1');
-    
-    for i=1:size(eigenDatabase, 3)
-        eigenIm = eigenDatabase(:, :, i) - pcaImg;
-        eigenRes(i) = abs(sum(eigenIm(:)));
+    faceSize = sum(sum(size(alignedFace)))
+    if(faceSize > 10)    
+        % prepare for eigen faces
+        alignedGray = rgb2gray(alignedFace);
+        pcaImg = pca(alignedGray, 43);
+
+        % call global eigenDatabase
+        eigenDatabase = createEigenDatabase('images/db1');
+
+        for i=1:size(eigenDatabase, 3)
+            eigenIm = eigenDatabase(:, :, i) - pcaImg;
+            eigenRes(i) = abs(sum(eigenIm(:)));
+        end
+
+        [eigenRes, idx] = sort(eigenRes)
+        % retuuurn found id!
+        id = idx(1);
+        % draw triangle on face
+    %     polygon = int32([m(1), m(2), le(1), le(2), re(1), re(2)]);
+    %     J = insertShape(cropped, 'FilledPolygon', polygon, 'Color', 'red', 'Opacity', 0.7);
+    else
+        id = -1;
     end
-    
-    [eigenRes, idx] = sort(eigenRes)
-    % retuuurn found id!
-    id = idx(1);
-    
-    % draw triangle on face
-%     polygon = int32([m(1), m(2), le(1), le(2), re(1), re(2)]);
-%     J = insertShape(cropped, 'FilledPolygon', polygon, 'Color', 'red', 'Opacity', 0.7);
-    
-    
     % display debug images
     subplot(2,2,1) , subimage(img);
     subplot(2,2,2) , subimage(alignedFace);
