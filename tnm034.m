@@ -57,12 +57,12 @@ function id = tnm034(img)
     polygon = int32([m(1), m(2), le(1), le(2), re(1), re(2)]);
     J = insertShape(cropped, 'FilledPolygon', polygon, 'Color', 'red', 'Opacity', 0.7);
     
-    % prepare for eigen faces
-    alignedGray = rgb2gray(alignedFace);
-    pcaImg = pca(alignedGray, 43);
-    
     % call global eigenDatabase
     eigenDatabase = createEigenDatabase('images/db1');
+    
+    % get eigen face
+    alignedGray = rgb2gray(alignedFace);
+    pcaImg = pca(alignedGray, 43);
     
     for i=1:size(eigenDatabase, 3)
         eigenIm = eigenDatabase(:, :, i) - pcaImg;

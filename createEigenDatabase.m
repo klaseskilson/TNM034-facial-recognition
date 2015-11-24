@@ -18,6 +18,7 @@ function [ database ] = createEigenDatabase( dirname )
         
         % k best eigen vectors for each img
         k = 43;
+        % pre-allocate memory for all pca imgs
         eigenDatabase = zeros(169, k, numel(files));
 
         for i=1:numel(files)
