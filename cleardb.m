@@ -1,0 +1,1 @@
+clear global eigenDatabase eigenDatabaseDirname storedMeanImage meanDirname
