@@ -2,7 +2,7 @@ function [ transformedImage ] = alignFace( image, pts, height, width )
 %alignFace alignfaces to match template image
 
     if nargin < 3
-        height = 128;
+        height = 160;
         width = height*0.66;
     end
 
