@@ -17,8 +17,9 @@ load database
         [id, result] = findFaceInDB(alignedGray, databaseEigenVectors, databaseMeanImage, faceWeights);
     else
         id = -1;
+        result = -1;
     end
     % display debug images
-    subplot(2,2,1) , subimage(img);
-    subplot(2,2,2) , subimage(alignedFace);
+%     subplot(2,2,1) , subimage(img);
+%     subplot(2,2,2) , subimage(alignedFace);
 end

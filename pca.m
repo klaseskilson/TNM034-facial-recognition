@@ -8,5 +8,5 @@ function [Eigenvector, eigenValues, meanImage] = pca(Img)
     [E, D ,X ] = svd(x);
     eigenValues = diag(D).^2;
     eigenValues = eigenValues(1:16);
-    Eigenvector = E(:,1:16);
+    Eigenvector = E(:,1:40);
 end

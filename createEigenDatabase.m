@@ -15,7 +15,7 @@ function [ eigenVectors, meanImage, database] = createEigenDatabase( dirname, nu
     files = {files.name}';
 
     % pre-allocate memory for all pca imgs
-    eigenVectors = zeros(128*84, 16);
+    eigenVectors = zeros(128*84, 40);
 
     for i=1:numel(files)
         fname = fullfile(dirname, files{i});
@@ -34,13 +34,13 @@ function [ eigenVectors, meanImage, database] = createEigenDatabase( dirname, nu
     
     % store dirname and return database
     eigenVectors = allEigenVectors;
-    database = zeros(16,16);
+    database = zeros(16,40);
     for i=1:16
         img = allImages(:,i)';
         img = double(img)-meanImage;
-        for j=1:16
+        for j=1:40
             w =  img*eigenVectors(:,j);
             database(i,j) = w;
         end
-    end
+    end 
 end
