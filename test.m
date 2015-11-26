@@ -7,17 +7,17 @@ for i=1:numel(files)
     clear img fname res;
     fname = fullfile(dirname, files{i});
     img = imread(fname);
-    [res, info] = tnm034(imrotate(img,10));
+    [res, info] = tnm034(imrotate(img, 5));
     
     if(res == i)
         disp(['Match for file "' fname '": ' num2str(res)]);
         correct = correct +1;
     else
-        disp(['No Match for "' fname '"!']);
+        disp(['No Match for "' fname '"! Got ' num2str(res) ', expected ' num2str(i) ]);
         whos info
         info'
     end
 %     waitforbuttonpress;
 end
 correct
-correctness = correct/16.0
+correctness = correct/numel(files)
