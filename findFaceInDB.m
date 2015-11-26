@@ -1,4 +1,4 @@
-function [ id ] = findFaceInDB( image, v, mean, weights )
+function [ id, all ] = findFaceInDB( image, v, mean, weights )
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
     image = reshape(image, [1,128*84]);
@@ -16,6 +16,6 @@ function [ id ] = findFaceInDB( image, v, mean, weights )
     [weight, idx] = sort(distance);
     
     id = idx(1);
-    
+    all =  idx;
 end
 

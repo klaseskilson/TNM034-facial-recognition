@@ -1,5 +1,5 @@
 % Find matching faces from predefined database
-function id = tnm034(img)
+function [id, result ] = tnm034(img)
 load database
 % im: Image of unknown face, RGB-image in uint8 format in the range [0,255] 
 %
@@ -14,8 +14,11 @@ load database
         % prepare for eigen faces
         alignedGray = rgb2gray(alignedFace);
         % call global eigenDatabase
-        id = findFaceInDB(alignedGray, databaseEigenVectors, databaseMeanImage, faceWeights);
+        [id, result] = findFaceInDB(alignedGray, databaseEigenVectors, databaseMeanImage, faceWeights);
     else
         id = -1;
     end
+    % display debug images
+    subplot(2,2,1) , subimage(img);
+    subplot(2,2,2) , subimage(alignedFace);
 end
