@@ -26,13 +26,20 @@ function [ aligned ] = detectAndNormalize( img )
     numMouths = 0;
     eyeTresh = 230;
     mouthTresh= 120;
-    while((numEyes < 2 || numMouths < 1) && (eyeTresh > 0 && mouthTresh > 0))
+    le = 0;
+    re = 0;
+    m = 0;
+    while(((numEyes < 2 && numMouths < 1) || sum(le+re+m) == 0 )&& (eyeTresh > 0 && mouthTresh > 0))
         [le,re, m, numEyes, numMouths] = faceTriangle(faceCrop(eye,mask), faceCrop(mouth,mask), eyeTresh, mouthTresh);
         if(numMouths < 1)
           mouthTresh = mouthTresh - 10;
         end
         if(numEyes < 2)
           eyeTresh = eyeTresh - 10;
+        end
+        if(sum(le+re+m) == 0)
+            mouthTresh = mouthTresh - 10;
+            eyeTresh = eyeTresh - 10;
         end
     end
     if(eyeTresh == 0 || mouthTresh ==0 || sum(le+re+m) == 0)
