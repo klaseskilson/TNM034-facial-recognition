@@ -48,6 +48,11 @@ faceMask = imclose(faceMask, kernel);
 faceMask = imfill(faceMask,'holes');
 
 % assume largest area is face and use only that using matlab magic
-faceMask = largestArea(faceMask);
-faceMask(:,:,2) = faceMask;
-faceMask(:,:,3) = faceMask(:,:,2);
+if (sum(sum(faceMask)) == 0)
+    faceMask = skinModel(transformedImage, threshold+.2);
+    return
+else
+    faceMask = largestArea(faceMask);
+    faceMask(:,:,2) = faceMask;
+    faceMask(:,:,3) = faceMask(:,:,2);
+end
