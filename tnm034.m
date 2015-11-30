@@ -10,11 +10,9 @@ load database
     alignedFace = detectAndNormalize(img);
     faceSize = sum(sum(size(alignedFace)));
     % only continue if we find a face
-    if(faceSize > 10)    
-        % prepare for eigen faces
-        alignedGray = rgb2gray(alignedFace);
+    if(faceSize > 10)
         % call global eigenDatabase
-        [id, result] = findFaceInDB(alignedGray, databaseEigenVectors, databaseMeanImage, faceWeights);
+        [id, result] = findFaceInDB(alignedFace, databaseEigenVectors, databaseMeanImage, faceWeights);
     else
         id = -1;
         result = -1;

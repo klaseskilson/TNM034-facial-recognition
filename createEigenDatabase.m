@@ -16,9 +16,7 @@ function [ id ] = createEigenDatabase( dirname )
     for i=1:numel(files)
         fname = fullfile(dirname, files{i});
         img = imread(fname);
-        cropped = detectAndNormalize(img);
-        croppedGray = rgb2gray(cropped);
-        allImages(:,:,i) = croppedGray;
+        allImages(:,:,i) = detectAndNormalize(img);
     end
     totimages = numel(files);
     [X,Y] = size(allImages(:,:,1));

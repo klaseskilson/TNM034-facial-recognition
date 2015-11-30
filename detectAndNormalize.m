@@ -1,4 +1,4 @@
-function [ aligned ] = detectAndNormalize( img )
+function [ normalized ] = detectAndNormalize( img )
 %DETECTANDNORMALIZE Detect face features and normalize and crop RGB image img
 
     % adjust color and colorspace
@@ -42,7 +42,7 @@ function [ aligned ] = detectAndNormalize( img )
             eyeTresh = eyeTresh - 10;
         end
     end
-    if(eyeTresh == 0 || mouthTresh ==0 || sum(le+re+m) == 0)
+    if(eyeTresh == 0 || mouthTresh == 0 || sum(le+re+m) == 0)
         return
     end
     cropped = faceCrop(img,mask);
@@ -52,5 +52,8 @@ function [ aligned ] = detectAndNormalize( img )
            re, 1;
            m, 1];
     aligned = alignFace(cropped, pts);
+    
+    aligned = rgb2gray(aligned);
+    normalized = logAbout(aligned);
 end
 
