@@ -19,6 +19,6 @@ function [ out ] = logAbout( img )
     
     out = a + (log(img + 1) / (b * log(c)));
     out = normalize(out, 255);
-%     imshow(uint8(out));
-%     waitforbuttonpress
+    % imshow(uint8(out));
+    % waitforbuttonpress
 end

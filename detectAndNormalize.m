@@ -54,6 +54,6 @@ function [ normalized ] = detectAndNormalize( img )
     aligned = alignFace(cropped, pts);
     
     aligned = rgb2gray(aligned);
-    normalized = logAbout(aligned);
+    normalized = histeq(aligned);
 end
 

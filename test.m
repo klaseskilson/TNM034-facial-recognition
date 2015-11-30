@@ -3,7 +3,7 @@ files = dir(fullfile(dirname, '*.jpg'));
 files = {files.name}';
 correct = 0;
 nofound = 0;
-angle = 2;
+angle = 5;
 for i=1:numel(files)
     clear img fname res;
     fname = fullfile(dirname, files{i});
