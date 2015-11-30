@@ -1,6 +1,8 @@
 function [ out ] = logAbout( img )
 %LOGABOUT perform logabout on image img
 %   Detailed explanation goes here
+%     out = img;
+%     return
     
     img = double(img);
     % high pass filter
@@ -11,12 +13,12 @@ function [ out ] = logAbout( img )
     img = normalize(img, 255);
     
     % log image
-    a = 1;
-    b = 1;
-    c = 2;
+    a = 0;
+    b = 1/255;
+    c = max(img(:)) + 1;
     
     out = a + (log(img + 1) / (b * log(c)));
     out = normalize(out, 255);
-   
+%     imshow(uint8(out));
+%     waitforbuttonpress
 end
-
