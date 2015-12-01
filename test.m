@@ -10,7 +10,12 @@ for i=1:numel(files)
     img = imread(fname);
     number = str2num(fname(end-5:end-4));
     for k=-angle:angle
-        [res, info] = tnm034(imrotate(img,k));  
+        % destroy the image!
+        % modifiedImage = imrotate(img, k);
+        modifiedImage = img * (1 - k * 0.01);
+
+        [res, info] = tnm034(modifiedImage);
+
         if(res == number)
             disp(['Match for file "' fname '": ' num2str(res)]);
             correct = correct +1;
