@@ -3,12 +3,15 @@ files = dir(fullfile(dirname, '*.jpg'));
 files = {files.name}';
 correct = 0;
 nofound = 0;
-total = 0;
 
 % control the error!
 rotateError = 5;
 toneError = 30;
 scaleError = 10;
+
+falseNegative = 0;
+falsePositive = 0;
+threshold = 300;
 
 for i=1:numel(files)
     clear img fname res;
@@ -29,27 +32,31 @@ for i=1:numel(files)
                 total = total + 1;
                 
                 [res, info] = tnm034(modifiedImage);
-
-                if(res == number)
+                if (res == -1)
+                    nofound = nofound + 1;
+                    continue
+                end
+                
+                w = info(1,2);
+                id = info(1,1);
+                if(w > threshold)
+                    disp('Over treshold!')
+                    if(res == number)
+                        falseNegative = falseNegative + 1;
+                    end
+                elseif(res == number)
                     disp(['Match for file "' fname '": ' num2str(res)]);
                     correct = correct +1;
                 else
+                    falsePositive = falsePositive + 1;
                     disp(['No Match for "' fname '"! Got ' num2str(res) ', expected ' num2str(number) ]);
                 end
-                if(res ~=-1)
-                    id = info(:,1);
-                    w = info(:,2);
-                    id(1:3)'
-                    w(1:3)'
-                else
-                    nofound = nofound + 1;
-                end
-
-            end
-            
+            end 
         end
     end
 end
 correct
 correctness = correct/total
+falseNegative
+falsePositive
 nofound
