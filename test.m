@@ -4,46 +4,55 @@ files = {files.name}';
 correct = 0;
 nofound = 0;
 
+% control the error!
+rotateError = 5;
+toneError = 30;
+scaleError = 10;
+
 falseNegative = 0;
 falsePositive = 0;
-threshold = 200;
-
-total = 0;
-step = 1;
-angle = 1;
+threshold = 300;
 
 for i=1:numel(files)
     clear img fname res;
     fname = fullfile(dirname, files{i});
     img = imread(fname);
     number = str2num(fname(end-5:end-4));
-    for k=-angle:step:angle
-        total = total + 1;
+    for j=-rotateError:5:rotateError
         % destroy the image!
-        modifiedImage = imrotate(img, k);
-        [res, info] = tnm034(modifiedImage);
-        w = info(1,2);
-        id = info(1,1);
-        if(w > threshold)
-            'Over treshold!'
-            if(res == number)
-                falseNegative = falseNegative + 1;
-            end
-        elseif(res == number)
-            disp(['Match for file "' fname '": ' num2str(res)]);
-            correct = correct +1;
-        else
-            falsePositive = falsePositive + 1;
-            disp(['No Match for "' fname '"! Got ' num2str(res) ', expected ' num2str(number) ]);
+        % rotate image
+        rotatedImage = imrotate(img, j);
+        for k=-toneError:30:toneError
+            % adjust tone value
+            toneAdjustedImage = rotatedImage * (1 - k * 0.01);
+            for l=-scaleError:10:scaleError
+                % scale image
+                modifiedImage = imresize(toneAdjustedImage, 1 - l * 0.01);
+                
+                total = total + 1;
+                
+                [res, info] = tnm034(modifiedImage);
+                if (res == -1)
+                    nofound = nofound + 1;
+                    continue
+                end
+                
+                w = info(1,2);
+                id = info(1,1);
+                if(w > threshold)
+                    disp('Over treshold!')
+                    if(res == number)
+                        falseNegative = falseNegative + 1;
+                    end
+                elseif(res == number)
+                    disp(['Match for file "' fname '": ' num2str(res)]);
+                    correct = correct +1;
+                else
+                    falsePositive = falsePositive + 1;
+                    disp(['No Match for "' fname '"! Got ' num2str(res) ', expected ' num2str(number) ]);
+                end
+            end 
         end
-%         if(res ~=-1)
-%             id = info(:,1);
-%             w = info(:,2);
-%             id(1:3)'
-%             w(1:3)'
-%         else
-%             nofound = nofound + 1;
-%         end
     end
 end
 correct
