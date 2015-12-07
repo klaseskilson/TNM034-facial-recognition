@@ -1,17 +1,22 @@
 dirname = 'images/db1';
 files = dir(fullfile(dirname, '*.jpg'));
 files = {files.name}';
-correct = 0;
-nofound = 0;
+%total of files
+total = 0;
 
 % control the error!
 rotateError = 5;
 toneError = 30;
 scaleError = 10;
+step = 1;
+angle = 5;
 
-falseNegative = 0;
-falsePositive = 0;
-threshold = 300;
+
+% results
+correct = 0;
+nofound = 0;
+FRR = 0;
+FAR = 0;
 
 for i=1:numel(files)
     clear img fname res;
@@ -28,35 +33,44 @@ for i=1:numel(files)
             for l=-scaleError:10:scaleError
                 % scale image
                 modifiedImage = imresize(toneAdjustedImage, 1 - l * 0.01);
-                
                 total = total + 1;
                 
                 [res, info] = tnm034(modifiedImage);
-                if (res == -1)
+                ids = info(1,1);
+                if(res ~= 0)
+                    correct = correct + 1;
+                    if(ids == number)
+                      %correct
+                      disp(['Match for file "' fname '": ' num2str(res)]);
+                    else
+                      %false positive
+                      FAR = FAR + 1;
+                      disp(['False positive for file "' fname '": ' num2str(res)]);
+                    end
+                else
+                    if(ids == number)
+                        FRR = FRR + 1;
+                        disp(['False negative for file "' fname '": ' num2str(res)]);
+                    elseif(ids == -1)
+                        nofound = nofound + 1;
+                        disp(['No face found file "' fname '": ' num2str(res)]);
+                    else
+                        disp(['No match for file "' fname '": ' num2str(res)]);
+                    end
+                end
+                
+                
+                if (ids == -1)
                     nofound = nofound + 1;
                     continue
                 end
-                
-                w = info(1,2);
-                id = info(1,1);
-                if(w > threshold)
-                    disp('Over treshold!')
-                    if(res == number)
-                        falseNegative = falseNegative + 1;
-                    end
-                elseif(res == number)
-                    disp(['Match for file "' fname '": ' num2str(res)]);
-                    correct = correct +1;
-                else
-                    falsePositive = falsePositive + 1;
-                    disp(['No Match for "' fname '"! Got ' num2str(res) ', expected ' num2str(number) ]);
-                end
-            end 
+            end
         end
     end
 end
-correct
-correctness = correct/total
-falseNegative
-falsePositive
-nofound
+
+disp(['Results of ' num2str(total) ' images:']);
+disp(['Correct: ' num2str(correct/total)]);
+disp(['False Rejection Rate: ' num2str(FRR/(total-nofound-correct))]);
+disp(['False Acceptance Rate: ' num2str(FAR/correct)]);
+disp(['No faces found: ' num2str(nofound)]);

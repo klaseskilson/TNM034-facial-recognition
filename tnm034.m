@@ -1,5 +1,5 @@
 % Find matching faces from predefined database
-function [id ] = tnm034(img)
+function [id, result] = tnm034(img)
 load database
 % im: Image of unknown face, RGB-image in uint8 format in the range [0,255] 
 %
@@ -17,11 +17,11 @@ load database
         [id, result] = findFaceInDB(alignedFace, databaseEigenVectors, databaseMeanImage, faceWeights, numberOfVectors);
         w = result(1,2);
         if(w > threshold)
-          'Over threshold!'
           id = 0;
         end
     else
-        id = 0;
+        result = -1;
+        id = 0; %FIXME: can we keep this as -1 for no face?
     end
     
 end
