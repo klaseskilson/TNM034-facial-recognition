@@ -22,17 +22,15 @@ imgY = imgSize(2);
 %equation 10
 trans  = [ cos(theta) sin(theta);
           -sin(theta) cos(theta) ];
-facemask = zeros(imgX,imgY);
 
-for x=1:imgX
-    for y=1:imgY
-        value = [ double(transformedImage(x,y,2)) - cx;
-                  double(transformedImage(x,y,3)) - cy ];
-        pos = trans*value;
-        %should be <= 1 here but its to narrow for good result
-        faceMask(x,y) = ( ((pos(1) - ecx)^2 / a2 + (pos(2) - ecy)^2 / b2) <= threshold);
-    end
-end
+imgCb(:,:) = double(transformedImage(:,:,2)) - cx;
+imgCr(:,:) = double(transformedImage(:,:,3)) - cy;
+
+posX = imgCb*cos(theta)+imgCr*sin(theta);
+posY = imgCb*-sin(theta)+imgCr*cos(theta);
+
+faceMask = ( ((posX - ecx).^2 ./ a2 + (posY - ecy).^2 ./ b2) <= threshold);
+
 
 % morphological operations, closing, open, closing
 diskSize = 20;

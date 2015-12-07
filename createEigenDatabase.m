@@ -22,7 +22,7 @@ function [ id ] = createEigenDatabase( dirname )
     [X,Y] = size(allImages(:,:,1));
     d = X*Y;
     allImages = reshape(allImages, [d, totimages]);
-    [allEigenVectors, allEigenValues, meanImage] = pca(allImages);
+    [allEigenVectors, allEigenValues, meanImage] = pca(allImages, k);
     disp('... done!')
     toc
     

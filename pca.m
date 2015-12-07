@@ -1,5 +1,5 @@
 % Principal component analysis
-function [Eigenvector, eigenValues, meanImage] = pca(Img)
+function [Eigenvector, eigenValues, meanImage] = pca(Img, numeig)
 %   img - the image to analyse
 
     x = double(Img);
@@ -8,6 +8,5 @@ function [Eigenvector, eigenValues, meanImage] = pca(Img)
     [E, D ,X ] = svd(x);
     eigenValues = diag(D).^2;
     eigenValues = eigenValues(1:16);
-%   FIXME: should be based on nnumber of eig-vectors we want
-    Eigenvector = E(:,1:16);
+    Eigenvector = E(:,1:numeig);
 end
