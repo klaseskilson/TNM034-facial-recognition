@@ -7,7 +7,7 @@ function [ normalized ] = detectAndNormalize( img )
     yccorig = ycc;
     ycc = chromaTransformation(ycc);
     
-    aligned = 0;
+    normalized = 0;
     % detect skin
     skinModelThreshold = 2;
     

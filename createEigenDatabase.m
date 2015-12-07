@@ -6,7 +6,7 @@ function [ id ] = createEigenDatabase( dirname )
     if nargin == 0  
         dirname = 'images/db1'
     end
-    k = 16
+    k = 16;
     % check if we have a database and that the database is built from the
     % same directory as we want to build it from this timeaseDirname databaseMean
     disp(['Creating eigen database for dir "' dirname '"...'])

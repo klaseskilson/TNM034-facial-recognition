@@ -1,5 +1,5 @@
 % Find matching faces from predefined database
-function [id, result ] = tnm034(img)
+function [id ] = tnm034(img)
 load database
 % im: Image of unknown face, RGB-image in uint8 format in the range [0,255] 
 %
@@ -9,15 +9,19 @@ load database
  
     alignedFace = detectAndNormalize(img);
     faceSize = sum(sum(size(alignedFace)));
+    numberOfVectors = 16;
+    threshold = 300;
     % only continue if we find a face
     if(faceSize > 10)
         % call global eigenDatabase
-        [id, result] = findFaceInDB(alignedFace, databaseEigenVectors, databaseMeanImage, faceWeights);
+        [id, result] = findFaceInDB(alignedFace, databaseEigenVectors, databaseMeanImage, faceWeights, numberOfVectors);
+        w = result(1,2);
+        if(w > threshold)
+          'Over threshold!'
+          id = 0;
+        end
     else
-        id = -1;
-        result = -1;
+        id = 0;
     end
-    % display debug images
-%     subplot(2,2,1) , subimage(img);
-%     subplot(2,2,2) , subimage(alignedFace);
+    
 end

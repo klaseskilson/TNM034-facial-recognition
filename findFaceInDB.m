@@ -1,10 +1,10 @@
-function [ id, all] = findFaceInDB( image, v, mean, weights )
+function [ id, all] = findFaceInDB( image, v, mean, weights, numeig )
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
     [y,x] = size(image);
     image = reshape(image, [1,y*x]);
     img = double(image)-mean;
-    for j=1:16
+    for j=1:numeig
         vec = v(:,j);
         w =  v(:,j)'*img';
         val(j) = w;
