@@ -3,31 +3,37 @@ function [ id ] = createEigenDatabase( dirname )
 %   to clear the database and allow for re-creation, run 
 %   `clear global eigenDatabase eigenDatabaseDirname`
     
+    %default database folder
     if nargin == 0  
         dirname = 'images/db1'
     end
+    
+    % number of eigenvectors to use
     k = 16;
-    % check if we have a database and that the database is built from the
-    % same directory as we want to build it from this timeaseDirname databaseMean
+    
     disp(['Creating eigen database for dir "' dirname '"...'])
     tic
+    
     files = dir(fullfile(dirname, '*.jpg'));
     files = {files.name}';
     for i=1:numel(files)
         fname = fullfile(dirname, files{i});
         img = imread(fname);
+        %find face and align them
         allImages(:,:,i) = detectAndNormalize(img);
     end
     totimages = numel(files);
     [X,Y] = size(allImages(:,:,1));
     d = X*Y;
+    %create a 16 by d vector of all images
     allImages = reshape(allImages, [d, totimages]);
+    %run PCA and get eigen vector, values and mean image
     [allEigenVectors, allEigenValues, meanImage] = pca(allImages, k);
     disp('... done!')
     toc
     
-    % store dirname and return database
     eigenVectors = allEigenVectors;
+    %create database of weights to eigenvectors
     database = zeros(16,k);
     for i=1:16
         img = allImages(:,i)';
@@ -37,6 +43,8 @@ function [ id ] = createEigenDatabase( dirname )
             database(i,j) = w;
         end
     end 
+    
+    %set variable names to store that will later be used in tnm034.m
     databaseEigenVectors = eigenVectors;
     databaseMeanImage = meanImage;
     faceWeights = database;

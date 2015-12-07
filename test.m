@@ -11,7 +11,6 @@ scaleError = 10;
 step = 1;
 angle = 5;
 
-
 % results
 correct = 0;
 nofound = 0;
@@ -62,6 +61,7 @@ for i=1:numel(files)
                 
                 if (ids == -1)
                     nofound = nofound + 1;
+                    disp(['No Face for file "' fname '": ' num2str(res)]);
                     continue
                 end
             end
