@@ -12,7 +12,6 @@ function [ normalized ] = detectAndNormalize( img )
     skinModelThreshold = 2;
     
     mask = skinModel(ycc, skinModelThreshold);
-
     % detect eyes and mouth
     eye = eyeMap(yccorig);
     mouth = mouthMap(yccorig, mask);    
@@ -33,15 +32,14 @@ function [ normalized ] = detectAndNormalize( img )
         [le,re, m, numEyes, numMouths] = faceTriangle(faceCrop(eye,mask), faceCrop(mouth,mask), eyeTresh, mouthTresh);
         if(numMouths < 1)
           mouthTresh = mouthTresh - 10;
-        end
-        if(numEyes < 2)
+        elseif(numEyes < 2)
           eyeTresh = eyeTresh - 10;
-        end
-        if(sum(le+re+m) == 0)
+        elseif(sum(le+re+m) == 0)
             mouthTresh = mouthTresh - 10;
             eyeTresh = eyeTresh - 10;
         end
     end
+
     if(eyeTresh == 0 || mouthTresh == 0 || sum(le+re+m) == 0)
         return
     end
@@ -54,6 +52,7 @@ function [ normalized ] = detectAndNormalize( img )
     aligned = alignFace(cropped, pts);
     
     aligned = rgb2gray(aligned);
+    normalized = aligned;
     normalized = histeq(aligned);
+    
 end
-

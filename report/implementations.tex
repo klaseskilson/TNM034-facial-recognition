@@ -1,0 +1,13 @@
+The program was implemented in Matlab. It consists of one main function that accepts an RGB image as its only input variable, and returns the number corresponding to the correct face in the image database, if found.
+
+Initially, the images are color-corrected using the gray world-assumption method. The largest RGB value is detected and used to normalize every channel. The image’s color-space is then converted to YCbCr using Matlab’s built-in function. The chroma channels of the image are then transformed through an implementation of the methods and equations described above.
+
+When the chroma channels have been transformed we go further on and retrieves the mask for the face as well as the mouth and eye map as described above.
+
+After completing the steps for retrieving eyes and mouth we can form a triangle between our two eyes and our mouth. This helps later on to normalize all faces by performing a rotation of the faces. This is done by using Matlabs built in imwarp function. The pivot points for the imwarp are the left and right eye as well as the mouth.
+
+In order to then further normalize the face we use histogram equalization to make sure all images have a somewhat even illumination. The result of this equalization can be seen below in figure N.
+
+Figure N: Before and after histogram equalization.
+
+When the normalization process has been performed it is all a matter of retrieving the eigenfaces from the images, a process that is described above. When the eigenface values for the candidate image is calculated, an error for each value in the reference database of eigenfaces is then calculated using the euclidian distance. The values in the Eigenface reference database are pre-calculated and stored in order to speed up the process, and to avoid re-calculating them for each candidate image. The ID of the image in the reference database that has the smallest euclidian error compared to the candidate image gets returned if the euclidian error passes a threshold of the maximum allowed error. This threshold value is found by taking the mean value of the error from all the false positives that the system returned during testing. This ID is what gets returned by the program.

@@ -1,0 +1,8 @@
+All images tested below was retrieved from database one. Different combinations of luminance, rotation and scaling has been performed on the images according to the given boundaries from the examinator. In order to do this we set up a testing program where we could iterate over the different settings. All images were transformed with values where rotation started at -5 degrees, the tone value was decreased by -30\%, and the images were scaled down by 10%. We then iterated stepwise over these values until we reached their positive counterpart, obtaining each unique combination of distortions.
+
+
+Table 1: Images with different types of enhancements, Total number of images 432.
+
+As we can see the different enhancement techniques that are applied to the images help to increase the correction rate a lot. There seems to however be a problem with faces not being found when all enhancements are applied, as well as when Gray world + Chroma transformation is combined.
+
+Table 2: Tests on new images of faces in database(DB2) and face not in database(DB0).

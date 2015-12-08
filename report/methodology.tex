@@ -1,0 +1,43 @@
+For correct recognition of a face the system have to do pre-processes of the image as well as normalization of the face’s orientation and position. The face is then analyzed with eigenfaces to compare with the database. Some of the steps described below uses an adaptive thresholding during detection. The decision to do this was based on the will to not dismiss images and faces in the early pre-process steps but rather dismiss it during the comparison with the eigenfaces.
+
+A brief overlook of the needed steps, which are also described below, for the detection can be seen in figure X
+
+
+Lighting compensation
+Since the method of detecting a face in an image is based on color, the potential difference in color temperature have to be eliminated. The method used in this project was Gray world assumption. The Gray world assumption method makes the assumption that the average value of the images RGB-channels should be equal. The smallest average of the channels is determined and then all the values in the image is scaled after this average to eliminate any difference in white balance in images.
+
+Skin detection
+The first part of the recognition is to detect faces within an image. The method used in this project is based on the implementation described by AUTHOR2. The image’s color space is first converted from RGB (Red, Green, Blue) into YCbCr (Y being the brightness, Cb the blue chroma and Cr the red chroma). The CbCr channels are then transformed into a value based on the Y value of each pixels. This transformation is done to be able to study the Cb and Cr values of each pixel in a 2D space. The criteria for skin color is approximated to an ellipse in the space of all Cb Cr values that can be represented. The image is turned into a binary (black and white) image with only pixels within the ellipse set to white. This image would later be used as a mask to only show the skin areas. The last step of the skin detection dismiss all skin areas except the biggest in the image. The image can then be cropped to this area to only contain the face part of the image.
+
+
+Figure N: The face mask applied to the original image.
+
+Eye map
+When mapping eyes of a person a methodology presented by X is used. The input image is converted into YCbCr color space. This is done because according to observations high Cb values and low Cr values are found around the eyes. Two different eye maps are calculated, one for the chrominance part of the eye and one for the luminance part. To calculate an eye map for the chrominance part equation X was used. All values in this equation was normalized in between 0 to 255. For the luminance part we need to use morphological operations since an eye can contain both dark and bright pixels. When performing the morphological operations a structuring element shaped as a disk is used. Equation X below was used to calculate the luminance eye map.
+
+To combine both eye maps a multiplication operation is used. The combined eye map is then dilated and masked in order to isolate the eyes.
+
+
+Mouth map
+Our mouth map was calculated in a similar way to the eye map. By measuring the different regions one can detect the mouth based on the fact that it usually has a strong red component in the facial region. The equation for the map can be seen below. Similarly to the eye map the input image is converted into the YCbCr color space and then processed.
+
+Face alignment
+With the eye map and mouth map the important facial points can be found. The maps are thresholded to create a binary mask. The maps are studied to find the centroid of each white area in the mask. Each eye centroid and mouth centroid is saved in two separate lists. The system then evaluates each mouth centroid with two eye centroids and gives this combination a score based on the following assumptions:
+Eye centroids must be above mouth centroid
+Less difference in height of the eye centroids are preferred
+Equal distance from the eye centroids  the mouth centroid is preferred
+The combinations are the sorted after the sum of these scores in ascending order and the first hit is the proposed face. The face is then warped to a normalized state with specific positions for the eyes and mouth. The threshold value of the masks was set to be adaptive and decrease if the system couldn’t find a mouth or two sets of eyes.
+
+LogAbout
+The purpose of the LogAbout method was to normalize the illumination of the faces. This is to better compare images where face have a wide range of differently illuminated faces. The method was implemented with help from the paper XX by XX. As seen in figure X the input image is sent through a high pass filter. The filter we used can be seen in figure X. When the filter has been applied to the image it is transformed using a log function. The equation used for the log function can be seen in figure x.
+
+Histogram equalization
+Similar to LogAbout, the purpose of histogram equalization is to normalize the illumination of the faces. This method redistributes the image’s intensity evenly throughout a larger spectrum in the histogram compared to before the equalization. This results in an improved contrast in the image. (Ref: Adaptive histogram equalization and its variations.) In theory, this could improve the distinguishing facial features of the images, while also potentially increasing the risk of failing to recognise new features introduced to faces over time.
+
+Eigenfaces
+Storing and comparing a potentially large image database requires a lot of memory, since each normalized image needs to be stored in a database and then compared to the current image. If no action is taken to compensate for this, a situation where the program’s memory requirements exceeds what is available is likely to arise. To avoid this, and to lower the data size to a manageable amount, a method called principal component analysis (PCA) is used. In practice, the number of dimensions in the high-dimensional dataset that our image database constitutes is reduced.
+
+This dimension reduction is basically performed by focusing on the difference between the images. Correlated variables are not interesting when the aim is to distinguish variance and make decisions upon differences. What is interesting is however the uncorrelated variables. By calculating the mean image out of all images in the that is in the image database and subtracting this mean image from an image, we get an image where the unique points of the image are highlighted. This can be used to calculate the covariance matrices for the images, which in turn is used to calculate eigenvalues and eigenvectors. These eigenvalues and eigenvectors are then used to match candidate images with the images in the database.
+
+False negatives and false positives
+Naturally, the program errors in some cases. There are two cases that deserves to be mentioned here; false negatives and false positives. False negatives are when the program thinks it has failed recognising a face, when it actually has the correct result. This can occur the answer is discarded in the thresholding of the summed error, when the program isn’t satisfyingly certain of the result. False positives is when the program simply guesses wrong, but with such a certainty that it passes the thresholding that should stop it.
