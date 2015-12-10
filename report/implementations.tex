@@ -16,12 +16,14 @@ This helps later on to normalize all faces by performing a rotation of the faces
 
 In order to then further normalize the face, histogram equalization was used to make sure all images had a somewhat even illumination. The result of this equalization can be seen below in figure \ref{fig:withhist}.
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\columnwidth]{withhist.jpg}
-    \caption{Before and after histogram equalization}
-    \label{fig:withhist}
-\end{figure}
+\begin{Figure}
+  % center it!
+  \centering
+    % adjust width as you like, include image from optional folder
+    \includegraphics[width=0.7\linewidth]{withhist.jpg}
+    % caption! change the label ref to what you want
+    \captionof{figure}{\emph{Before and after histogram equalization}\label{fig:withhist}}
+\end{Figure}
 
 To create the database, each normalized image were reshaped to a single vector and all images were then stored in a matrix with each row being an image. The PCA of this matrix was performed with Matlab’s Single value decomposition function to retrieve the Eigenfaces sorted in ascending order of the Eigenvalue. The dot product of each normalized image and each Eigenfaces would result in weight values. These values describe how much an Eigenface contributed to recreate the image. The Eigenfaces and the weight values was stored to be used during the recognition process.
 
