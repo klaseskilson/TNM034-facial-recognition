@@ -47,14 +47,15 @@ could then be cropped to this area to only contain the face part of the image.
 \end{figure}
 
 \subsection{Eye map}
-When mapping eyes of a person a methodology presented by X was used. The input
-image was converted into \emph{YCbCr} color space. This was done since
-observations showed that high Cb values and low Cr values were found around
-the eyes. Two different eye maps were calculated, one for the chrominance part
-of the eye and one for the luminance part. To calculate an eye map for the
-chrominance part equation \ref{eq:eyemapc} was used. For the luminance part
-morphological operations was used to smooth out small and irrelevant details.
-Equation \ref{eq:eyemapl} below was used to calculate the luminance eye map.
+When mapping eyes of a person a methodology presented in \cite{facedetection}
+was used. The input image was converted into \emph{YCbCr} color space. This
+was done since observations showed that high Cb values and low Cr values were
+found around the eyes. Two different eye maps were calculated, one for the
+chrominance part of the eye and one for the luminance part. To calculate an
+eye map for the chrominance part equation \ref{eq:eyemapc} was used. For the
+luminance part morphological operations was used to smooth out small and
+irrelevant details. Equation \ref{eq:eyemapl} below was used to calculate the
+luminance eye map.
 
 \begin{equation}
   EyeMapC = \frac{1}{3}(C_b^2 + (\widetilde{C}_r)^2 + (C_b/C_r))
@@ -104,7 +105,14 @@ The face was then warped to a normalized state with specific positions for the
 eyes and mouth.
 
 \subsection{LogAbout}
-The purpose of the LogAbout method was to normalize the illumination of the faces. This was to improve comparison in images where the the face had a wide range of differently illuminated areas. The method was implemented using the method suggested in \cite{logabout}. The input image was sent through a high pass filter that can be seen in equation \ref{eq:filter}. When the filter had been applied to the image it was transformed using a logarithmic function. The equation used for the logarithmic function can be seen in equation \ref{eq:logabout}.
+The purpose of the LogAbout method was to normalize the illumination of the
+faces. This was to improve comparison in images where the the face had a wide
+range of differently illuminated areas. The method was implemented using the
+method suggested in \cite{logabout}. The input image was sent through a high
+pass filter that can be seen in equation \ref{eq:filter}. When the filter had
+been applied to the image it was transformed using a logarithmic function. The
+equation used for the logarithmic function can be seen in equation
+\ref{eq:logabout}.
 
 \begin{equation}
   \begin{bmatrix}
