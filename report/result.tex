@@ -1,94 +1,69 @@
-All images tested below was retrieved from database one. Different combinations of luminance, rotation and scaling has been performed on the images according to the given boundaries from the examinator. In order to do this we set up a testing program where we could iterate over the different settings. All images were transformed with values where rotation started at -5 degrees, the tone value was decreased by -30\%, and the images were scaled down by 10%. We then iterated stepwise over these values until we reached their positive counterpart, obtaining each unique combination of distortions.
+\subsection{Image enhancements}
+All images tested in table 1 was retrieved from database one. Different combinations of luminance, rotation and scaling had been performed on the images according to the given boundaries in the task. In order to do this a testing program was set up that iterated over the different settings. All images were transformed with values where rotation started at -5 degrees, the tone value was decreased by -30\%, and the images were scaled down by 10\%. The program then iterated stepwise over these values until their positive counterpart was reached, obtaining each unique combination of distortions.
 
-
-\begin{center}
-    \begin{tabular}{ | l | l | l | l | p{15mm} |}
+\begin{table}
+    \caption{Images with different types of enhancements, total number of images is 432.}
+    \begin{tabular}{|l|r|r|r|r|}
     \hline
-    \textbf{Enhancements} & \textbf{Recognized} & \textbf{FRR} & \textbf{FAR} & \textbf{Faces not found} \\ \hline
-    None & 39.6\% & 18.4\% & 49.7\% & 0\%\\
+    \multicolumn{1}{|l|}{\textbf{Enhancements}} & \multicolumn{1}{l|}{\textbf{Recognized}} & \multicolumn{1}{l|}{\textbf{FRR}} & \multicolumn{1}{l|}{\textbf{FAR}} & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}} \textbf{ Face}\\ \textbf{not found}\end{tabular}}    \\ \hline
+    None                    & 39.6\%      & 18.4\%  & 49.7\%    & 0.0\%             \\ \hline
+    Gray world              & 44.9\%      & 24.0\%  & 58.2\%    & 0.0\%            \\ \hline
+    Chroma transformation   & 50,0\%      & 13.9\%  & 61.1\%    & 0.0\%             \\ \hline
+    Histogram equalization  & 53.1\%      & 51.2\%  & 40.6\%    & 0.0\%             \\ \hline
+    GW + chroma             & 56.2\%      & 21.5\%  & 55.6\%    & 9.3\%             \\ \hline
+    GW + hist.eq            & 51.6\%      & 29.2\%  & 50.2\%    & 0.0\%             \\ \hline
+    Chroma + hist.eq        & 56.0\%      & 24.7\%  & 59.0\%    & 0.0\%             \\ \hline
+    All enhancements        & 54.9\%      & 46.5\%  & 57.4\%    & 9.3\%             \\
     \hline
-    Gray World & 44.9\% & 24.0\% & 58.2\% & 0\% \\
-    \hline
-    Chroma transformation & 50\% & 13.9\% & 61.1\% & 0\% \\
-    \hline
-    Histogram equalization & 53.1\% & 51.2\% & 40.6\% & 0\% \\
-    \hline
-    GW + chroma & 56.2\% & 21.5\% & 55.6\% & 9.3\% \\
-    \hline
-    GW + hist.eq & 51.6\% & 29.2\% & 50.2\% & 0\% \\
-    \hline
-    Chroma + hist.eq & 56.0\% & 24.7\% & 59.0\% & 0\% \\
-    \hline
-    All enhancements & 54.9\% & 46.5\% & 57.4\% & 9.3\% \\
-    \hline
-
     \end{tabular}
-\end{center}
+    \label{tbl:enhancements}
+\end{table}
 
-\begin{center}
-    \begin{tabular}{ | l | l | l | l | l | p{15mm} |}
-    \hline
-    \textbf{Databases} & \textbf{Number of Images} & \textbf{Recognized} & \textbf{FRR} & \textbf{FAR} & \textbf{Faces not found} \\ \hline
-    DB0 & 108 & - & - & 13\% & 25.9\% \\
-    \hline
-    DB1 & 4 & - & - & 25\% & 0\% \\
-    \hline
-    DB1 & 16 & 100\% & 0\% & 0\% & 0\% \\
-    \hline
-    DB1 & 432 & 54.9\% & 46.5\% & 57.4\% & 9.3\% \\
-    \hline
-    DB2 & 38 & 31.6\% & 13.3\% & 75\% & 10.5\% \\
-    \hline
-    DB2 & 1026 & 28.4\% & 11.3\% & 90.0\% & 18.7\% \\
-    \hline
+<<<<<<< HEAD
+As can be seen the different enhancement techniques that are applied to the images help to increase the correction rate a lot. There is however a problem with faces not being found when all enhancements are applied, as well as when Gray world + Chroma transformation was combined.
 
+In Table 2 the different databases are tested with all enhancements active. The faces in DB0 was supposed to not be recognized but some of them are in the test. This could be fixed with a lower tolerance in the weight error but that would also result in a higher amount of FRR.
+
+\begin{table}
+    \caption{Tests on new images of faces in database(DB2) and face not in database(DB0).}
+    \begin{tabular}{|l|r|r|r|r|r|}
+    \hline
+    \textbf{Databases} & \begin{tabular}[c]{@{}l@{}} \textbf{Number} \\ \textbf{of images}\end{tabular} & \textbf{Recognized} & \textbf{FRR} & \textbf{FAR} & \begin{tabular}[c]{@{}l@{}} \textbf {Face} \\ \textbf{not found} \end{tabular} \\ \hline
+    DB0         & 4                 & -             & -         & 25.0\%    & 0.0\%  \\ \hline
+    DB0\textsuperscript{1}        & 108               & -             & -         & 13.0\%    & 25.9\% \\ \hline
+    DB1         & 16                & 100\%         & 0.0\%     & 0.0\%     & 0.0\%  \\ \hline
+    DB1\textsuperscript{1,2}      & 432               & 54.9\%        & 46.5\%    & 57.4\%    & 9.3\%  \\ \hline
+    DB2         & 38                & 31.6\%        & 13.3\%    & 75.0\%    & 10.5\%  \\ \hline
+    DB21        & 1026              & 28.4\%        & 11.3\%    & 90.0\%    & 18.7\% \\
+    \hline
     \end{tabular}
-\end{center}
+    \textsuperscript{1}:images are modified with rotation -5/+5 degrees, -10/+10\% scaling -30\%/+30 tone values \\
+    \textsuperscript{2}:Details of the result available in table 3.
+    \label{tbl:recognition-result}
+\end{table}
 
-
-\begin{center}
-    \begin{tabular}{ | l | l | l | l | p{15mm} |}
+\begin{table}
+    \caption{The result of 432 images from DB1 with the distortions mentioned above, 27 images per face. No matches means that no face was found in the image.}
+    \begin{tabular}{|l|r|r|r|r|}
     \hline
-    \textbf{Image nr.} & \textbf{Correct matches} & \textbf{No matches} & \textbf{FRR} & \textbf{FAR} \\ \hline
-    1 & 6 (22.2\%) & - & 22.2\% & 40.7\%\\
+    \textbf{Image nr.}   & \textbf{Correct matches}   & \textbf{No matches}       & \textbf{FRR}    & \textbf{FAR}       \\ \hline
+    1           & 6 (22.2\%)        & -                & 22.2\% & 40.7\%    \\ \hline
+    2           & 4 (14.8\%)        & -                & 33.3\% & 51.9\%    \\ \hline
+    3           & 5 (18.5\%)        & -                & 37.0\% & 22.2\%    \\ \hline
+    4           & 3 (11.1\%)        & -                & 18.5\% & 70.4\%    \\ \hline
+    5           & 10 (37.0\%)       & -                & 18.5\% & 37.0\%    \\ \hline
+    6           & 10 (37.0\%)       & 7 (25.9\%)       & 33.3\% & 3.7\%     \\ \hline
+    7           & 8 (29.6\%)        & 9 (33.3\%)       & 37.0\% & -         \\ \hline
+    8           & 11 (40.7\%)       & -                & 59.3\% & -         \\ \hline
+    9           & 1 (3.7\%)         & -                & 88.9\% & 7.4\%     \\ \hline
+    10          & 6 (22.2\%)        & -                & 51.9\% & 25.9\%    \\ \hline
+    11          & 7 (25.9\%)        & 3 (11.1\%)       & 37.0\% & 25.9\%    \\ \hline
+    12          & 6 (22.2\%)        & -                & 44.4\% & 33.3\%    \\ \hline
+    13          & 5 (18.5\%)        & -                & 40.7\% & 37.0\%    \\ \hline
+    14          & 11 (40.7\%)       & -                & 22.2\% & 37.0\%    \\ \hline
+    15          & 7 (25.9\%)        & -                & 18.5\% & 55.6\%    \\ \hline
+    16          & 2 (7.4\%)         & -                & 44.4\% & 48.2\%    \\
     \hline
-    2 & 4 (14.8\%) & - & 33.3\% & 51.9\% \\
-    \hline
-    3 & 5 (18.5\%) & - & 37.0\% & 22.2\% \\
-    \hline
-    4 & 3 (11.1\%) & - & 18.5\% & 70.4\% \\
-    \hline
-    5 & 10 (37.0\%) & - & 18.5\% & 37.0\% \\
-    \hline
-    6 & 10 (37.0\%) & 7 (25.9)\% & 33.3\% & 3.7\% \\
-    \hline
-    7 & 8 (29.6\%) & 9 (33.3)\% & 37.0\% & - \\
-    \hline
-    8 & 11 (40.7\%) & - & 59.3\% & - \\
-    \hline
-    9 & 1 (3.7\%) & - & 88.9\% & 7.4\% \\
-    \hline
-    10 & 6 (22.2\%) & - & 51.9\% & 25.9\% \\
-    \hline
-    11 & 7 (25.9\%) & 3 (11.1\%) & 37.0\% & 25.9\% \\
-    \hline
-    12 & 6 (22.2\%) & - & 44.4\% & 33.3\% \\
-    \hline
-    13 & 5 (18.5\%) & - & 40.7\% & 37.0\% \\
-    \hline
-    14 & 11 (40.7\%) & - & 22.2\% & 37.0\% \\
-    \hline
-    15 & 7 (25.9\%) & - & 18.5\% & 55.6\% \\
-    \hline
-    16 & 2 (7.4\%) & - & 44.4\% & 48.2\% \\
-    \hline
-
-
     \end{tabular}
-\end{center}
-
-Table 1: Images with different types of enhancements, Total number of images 432.
-
-As we can see the different enhancement techniques that are applied to the images help to increase the correction rate a lot. There seems to however be a problem with faces not being found when all enhancements are applied, as well as when Gray world + Chroma transformation is combined.
-
-Table 2: Tests on new images of faces in database(DB2) and face not in database(DB0).
+    \label{tbl:breakdown}
+\end{table}
