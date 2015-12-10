@@ -2,7 +2,7 @@ The result obtained in our face recognition system with DB1 is dependent on the 
 
 As can be seen in table 3, some images did not respond to the countermeasures taken against the distortion that the images were exposed to. Image number 9 only had one correct match out of 27, and in image number 7 there were 9 attempts where no face was found and the program canceled before any matching attempt were made. To understand what is going on in these particular cases, we take a look at the process of the face detection and normalization.
 
-In the images in figure \ref{fig:darkrotscal} to \ref{fig:mouth7}, the face detection process of image 7 is shown, where the image is darkened, rotated and scaled. As can be seen in figure \ref{fig:darkrotscal}, the face mask that is the result of the skin model function only returns a very small part of the whole face. This is the source of the issue – no face is detected since the eyes are excluded by the face mask. This is likely due to the lowered tone value of the image. 
+In figures \ref{fig:darkrotscal} to \ref{fig:mouth7}, the face detection process of image 7 is shown, where the image is darkened, rotated and scaled. As can be seen in figure \ref{fig:darkrotscal}, the face mask that is the result of the skin model function only returns a very small part of the whole face. This is the source of the issue – no face is detected since the eyes are excluded by the face mask. This is likely due to the lowered tone value of the image. 
 
 \begin{Figure}
   % center it!
@@ -10,7 +10,7 @@ In the images in figure \ref{fig:darkrotscal} to \ref{fig:mouth7}, the face dete
     % adjust width as you like, include image from optional folder
     \includegraphics[width=0.5\columnwidth]{im7_img.jpg}
     % caption! change the label ref to what you want
-    \captionof{figure}{\emph{Image darkened, rotated and scaled}\label{fig:darkrotscal}}
+    \captionof{figure}{\emph{Image 7 darkened, rotated and scaled}\label{fig:darkrotscal}}
 \end{Figure}
 
 \begin{Figure}
@@ -19,7 +19,7 @@ In the images in figure \ref{fig:darkrotscal} to \ref{fig:mouth7}, the face dete
     % adjust width as you like, include image from optional folder
     \includegraphics[width=0.5\columnwidth]{im7_mask.jpg}
     % caption! change the label ref to what you want
-    \captionof{figure}{\emph{Image masked}\label{fig:mask7}}
+    \captionof{figure}{\emph{Image 7 masked}\label{fig:mask7}}
 \end{Figure}
 
 \begin{Figure}
@@ -28,7 +28,7 @@ In the images in figure \ref{fig:darkrotscal} to \ref{fig:mouth7}, the face dete
     % adjust width as you like, include image from optional folder
     \includegraphics[width=0.5\columnwidth]{im7_eye.jpg}
     % caption! change the label ref to what you want
-    \captionof{figure}{\emph{Eye map of image}\label{fig:eye7}}
+    \captionof{figure}{\emph{Eye map of image 7}\label{fig:eye7}}
 \end{Figure}
 
 \begin{Figure}
@@ -37,11 +37,11 @@ In the images in figure \ref{fig:darkrotscal} to \ref{fig:mouth7}, the face dete
     % adjust width as you like, include image from optional folder
     \includegraphics[width=0.5\columnwidth]{im7_mouth.jpg}
     % caption! change the label ref to what you want
-    \captionof{figure}{\emph{Mouth map of image}\label{fig:mouth7}}
+    \captionof{figure}{\emph{Mouth map of image 7}\label{fig:mouth7}}
 \end{Figure}
 
 
-In the images in figure \ref{fig:darkrotscal9} to \ref{fig:normalized9}, we see the completed detection and normalization of a rotated, lightened and scaled version of image 9. The normalization and facial detection works fine on this example, however it was registered as a false positive. The system guessed that this was a picture of another person. 
+In figures \ref{fig:darkrotscal9} to \ref{fig:normalized9}, we see the completed detection and normalization of a rotated, lightened and scaled version of image 9. The normalization and facial detection works fine on this example, however it was registered as a false positive. The system guessed that this was a picture of another person. 
 
 
 \begin{Figure}
@@ -50,7 +50,7 @@ In the images in figure \ref{fig:darkrotscal9} to \ref{fig:normalized9}, we see 
     % adjust width as you like, include image from optional folder
     \includegraphics[width=0.5\columnwidth]{im9_img.jpg}
     % caption! change the label ref to what you want
-    \captionof{figure}{\emph{Image darkened, rotated and scaled}\label{fig:darkrotscal9}}
+    \captionof{figure}{\emph{Image 9 darkened, rotated and scaled}\label{fig:darkrotscal9}}
 \end{Figure}
 
 \begin{Figure}
@@ -59,7 +59,7 @@ In the images in figure \ref{fig:darkrotscal9} to \ref{fig:normalized9}, we see 
     % adjust width as you like, include image from optional folder
     \includegraphics[width=0.5\columnwidth]{im9_cropped.jpg}
     % caption! change the label ref to what you want
-    \captionof{figure}{\emph{Image cropped}\label{fig:crop9}}
+    \captionof{figure}{\emph{Image 9 cropped}\label{fig:crop9}}
 \end{Figure}
 
 \begin{Figure}
@@ -68,7 +68,7 @@ In the images in figure \ref{fig:darkrotscal9} to \ref{fig:normalized9}, we see 
     % adjust width as you like, include image from optional folder
     \includegraphics[width=0.5\columnwidth]{im9_mask.jpg}
     % caption! change the label ref to what you want
-    \captionof{figure}{\emph{Image masked}\label{fig:mask9}}
+    \captionof{figure}{\emph{Image 9 masked}\label{fig:mask9}}
 \end{Figure}
 
 \begin{Figure}
@@ -77,7 +77,7 @@ In the images in figure \ref{fig:darkrotscal9} to \ref{fig:normalized9}, we see 
     % adjust width as you like, include image from optional folder
     \includegraphics[width=0.5\columnwidth]{im9_eye.jpg}
     % caption! change the label ref to what you want
-    \captionof{figure}{\emph{Eye map of image}\label{fig:eye9}}
+    \captionof{figure}{\emph{Eye map of image 9}\label{fig:eye9}}
 \end{Figure}
 
 \begin{Figure}
@@ -86,7 +86,7 @@ In the images in figure \ref{fig:darkrotscal9} to \ref{fig:normalized9}, we see 
     % adjust width as you like, include image from optional folder
     \includegraphics[width=0.5\columnwidth]{im9_mouth.jpg}
     % caption! change the label ref to what you want
-    \captionof{figure}{\emph{Mouth map of image}\label{fig:mouth9}}
+    \captionof{figure}{\emph{Mouth map of image 9}\label{fig:mouth9}}
 \end{Figure}
 
 \begin{Figure}
@@ -95,7 +95,7 @@ In the images in figure \ref{fig:darkrotscal9} to \ref{fig:normalized9}, we see 
     % adjust width as you like, include image from optional folder
     \includegraphics[width=0.5\columnwidth]{im9_normalized.jpg}
     % caption! change the label ref to what you want
-    \captionof{figure}{\emph{Image normalized}\label{fig:normalized9}}
+    \captionof{figure}{\emph{Image 9 normalized}\label{fig:normalized9}}
 \end{Figure}
 
 
